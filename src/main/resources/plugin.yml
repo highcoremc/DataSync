@@ -1,0 +1,6 @@
+name: PlayerDataSync
+version: ${project.version}
+main: org.nocraft.loperd.playerdatasync.NoPlayerDataSync
+api-version: 1.13
+authors: [loperd]
+description: Plugin for synchronize all playerdata like armor, inventory, enderchest, etc.. between servers around BungeeCord/Waterfall proxy.
