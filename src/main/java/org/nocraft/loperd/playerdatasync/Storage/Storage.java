@@ -1,6 +1,6 @@
 package org.nocraft.loperd.playerdatasync.Storage;
 
-import org.nocraft.loperd.playerdatasync.Domain.PlayerData;
+import org.nocraft.loperd.playerdatasync.Domain.Player.PlayerData;
 import org.nocraft.loperd.playerdatasync.Domain.Throwing;
 import org.nocraft.loperd.playerdatasync.NoPlayerDataSync;
 import org.nocraft.loperd.playerdatasync.Storage.implementation.StorageImplementation;

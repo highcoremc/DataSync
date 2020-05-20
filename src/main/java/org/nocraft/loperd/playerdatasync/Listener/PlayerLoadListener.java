@@ -6,14 +6,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.nocraft.loperd.playerdatasync.Domain.LockedPlayerManager;
+import org.nocraft.loperd.playerdatasync.Domain.Player.LockedPlayerManager;
 import org.nocraft.loperd.playerdatasync.NoPlayerDataSync;
-import org.nocraft.loperd.playerdatasync.Domain.PlayerData;
+import org.nocraft.loperd.playerdatasync.Domain.Player.PlayerData;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 public class PlayerLoadListener extends NoListener {
 

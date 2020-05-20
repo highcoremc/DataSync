@@ -26,7 +26,7 @@
 package org.nocraft.loperd.playerdatasync.Storage.implementation;
 
 import org.jetbrains.annotations.Nullable;
-import org.nocraft.loperd.playerdatasync.Domain.PlayerData;
+import org.nocraft.loperd.playerdatasync.Domain.Player.PlayerData;
 import org.nocraft.loperd.playerdatasync.Domain.Shutdownable;
 import org.nocraft.loperd.playerdatasync.NoPlayerDataSync;
 

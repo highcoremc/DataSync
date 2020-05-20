@@ -1,10 +1,9 @@
 package org.nocraft.loperd.playerdatasync;
 
-import com.lambdaworks.redis.api.StatefulRedisConnection;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.nocraft.loperd.playerdatasync.Domain.Composer;
-import org.nocraft.loperd.playerdatasync.Domain.LockedPlayerManager;
-import org.nocraft.loperd.playerdatasync.Domain.SchedulerAdapter;
+import org.nocraft.loperd.playerdatasync.Domain.Player.LockedPlayerManager;
+import org.nocraft.loperd.playerdatasync.Domain.Scheduler.SchedulerAdapter;
 import org.nocraft.loperd.playerdatasync.Listener.LockedPlayerListener;
 import org.nocraft.loperd.playerdatasync.Listener.NoListener;
 import org.nocraft.loperd.playerdatasync.Listener.PlayerLoadListener;
@@ -19,6 +18,8 @@ public final class NoPlayerDataSync extends JavaPlugin {
     @Override
     public void onEnable() {
         LockedPlayerManager lockedManager = new LockedPlayerManager(this);
+
+        scheduler = new BukkitSchedulerAdapter(this);
 
         listeners.add(new PlayerLoadListener(this, lockedManager));
         listeners.add(new LockedPlayerListener(this, lockedManager));

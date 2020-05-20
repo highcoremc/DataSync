@@ -23,7 +23,7 @@
  *  SOFTWARE.
  */
 
-package org.nocraft.loperd.playerdatasync.Domain;
+package org.nocraft.loperd.playerdatasync.Domain.Scheduler;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;

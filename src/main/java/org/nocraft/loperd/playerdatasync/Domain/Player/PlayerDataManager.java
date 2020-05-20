@@ -1,4 +1,4 @@
-package org.nocraft.loperd.playerdatasync.Domain;
+package org.nocraft.loperd.playerdatasync.Domain.Player;
 
 import lombok.NonNull;
 import org.bukkit.entity.Player;

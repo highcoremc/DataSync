@@ -23,7 +23,7 @@
  *  SOFTWARE.
  */
 
-package org.nocraft.loperd.playerdatasync.Domain;
+package org.nocraft.loperd.playerdatasync.Domain.Scheduler;
 
 /**
  * Represents a scheduled task

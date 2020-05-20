@@ -1,10 +1,9 @@
-package org.nocraft.loperd.playerdatasync.Domain;
+package org.nocraft.loperd.playerdatasync.Domain.Player;
 
 import lombok.NonNull;
 import org.bukkit.GameMode;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
-import org.nocraft.loperd.playerdatasync.Domain.SavedPlayerInventory;
 
 import java.util.Collection;
 import java.util.Collections;

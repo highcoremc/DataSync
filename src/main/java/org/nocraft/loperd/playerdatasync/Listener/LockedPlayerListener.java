@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.scheduler.BukkitTask;
-import org.nocraft.loperd.playerdatasync.Domain.LockedPlayerManager;
+import org.nocraft.loperd.playerdatasync.Domain.Player.LockedPlayerManager;
 import org.nocraft.loperd.playerdatasync.NoPlayerDataSync;
 
 import static com.gmail.tracebachi.DeltaRedis.Shared.ChatMessageHelper.format;

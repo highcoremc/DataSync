@@ -25,7 +25,7 @@
 
 package org.nocraft.loperd.playerdatasync.Storage.implementation.sql;
 
-import org.nocraft.loperd.playerdatasync.Domain.PlayerData;
+import org.nocraft.loperd.playerdatasync.Domain.Player.PlayerData;
 import org.nocraft.loperd.playerdatasync.NoPlayerDataSync;
 import org.nocraft.loperd.playerdatasync.Storage.implementation.StorageImplementation;
 import org.nocraft.loperd.playerdatasync.Storage.implementation.sql.connection.ConnectionFactory;
