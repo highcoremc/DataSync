@@ -19,11 +19,9 @@ import static com.gmail.tracebachi.DeltaRedis.Shared.ChatMessageHelper.format;
 public class LockedPlayerListener extends NoListener {
 
     private LockedPlayerManager locked;
-    private NoPlayerDataSync plugin;
 
     public LockedPlayerListener(NoPlayerDataSync plugin, LockedPlayerManager locked) {
         super(plugin);
-        this.plugin = plugin;
         this.locked = locked;
     }
 

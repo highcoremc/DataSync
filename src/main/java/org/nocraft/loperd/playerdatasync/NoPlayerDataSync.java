@@ -10,6 +10,9 @@ import org.nocraft.loperd.playerdatasync.Listener.LockedPlayerListener;
 import org.nocraft.loperd.playerdatasync.Listener.NoListener;
 import org.nocraft.loperd.playerdatasync.Listener.PlayerLoadListener;
 import org.nocraft.loperd.playerdatasync.Manager.LockedPlayerManager;
+import org.nocraft.loperd.playerdatasync.Manager.PlayerDataManager;
+import org.nocraft.loperd.playerdatasync.Serializer.Bs64InventorySerializer;
+import org.nocraft.loperd.playerdatasync.Serializer.PlayerInventorySerializer;
 import org.nocraft.loperd.playerdatasync.Storage.Storage;
 import org.nocraft.loperd.playerdatasync.Storage.StorageFactory;
 
@@ -19,13 +22,18 @@ import java.io.InputStream;
 public final class NoPlayerDataSync extends JavaPlugin {
 
     private final Composer<NoListener> listeners = new Composer<>();
+
     @Getter
     private PlayerInventorySerializer playerInventorySerializer;
+
     @Getter
     private PluginConfiguration configuration;
+
     @Getter
     private SchedulerAdapter scheduler;
-    private Storage storage;
+
+    @Getter
+    private PlayerDataManager playerDataManager;
 
     @Override
     public void onEnable() {
@@ -35,15 +43,16 @@ public final class NoPlayerDataSync extends JavaPlugin {
         getLogger().info("Loading configuration...");
 
         this.configuration = new PluginConfiguration(this, provideConfigurationAdapter());
-        this.storage = new StorageFactory(this).getInstance();
         this.scheduler = new BukkitSchedulerAdapter(this);
 
+        Storage storage = new StorageFactory(this).getInstance();
         this.listeners.add(new PlayerLoadListener(this, storage, lockedManager));
         this.listeners.add(new LockedPlayerListener(this, lockedManager));
 
         this.listeners.register();
 
         this.playerInventorySerializer = new PlayerInventorySerializer(new Bs64InventorySerializer());
+        this.playerDataManager = new PlayerDataManager(this);
     }
 
     @Override

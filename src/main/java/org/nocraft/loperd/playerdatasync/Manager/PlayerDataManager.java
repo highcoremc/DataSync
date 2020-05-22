@@ -8,7 +8,7 @@ import org.nocraft.loperd.playerdatasync.PlayerData;
 import org.nocraft.loperd.playerdatasync.Inventory.SavedPlayerInventory;
 import org.nocraft.loperd.playerdatasync.NoPlayerDataSync;
 
-public class PlayerDataManager {
+public final class PlayerDataManager {
 
     private final NoPlayerDataSync plugin;
 

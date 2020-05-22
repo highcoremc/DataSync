@@ -2,10 +2,15 @@ package org.nocraft.loperd.playerdatasync.Storage.implementation.sql;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.bukkit.GameMode;
-import org.bukkit.potion.PotionEffect;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.nocraft.loperd.playerdatasync.Inventory.SavedPlayerInventory;
 import org.nocraft.loperd.playerdatasync.NoPlayerDataSync;
 import org.nocraft.loperd.playerdatasync.PlayerData;
+import org.nocraft.loperd.playerdatasync.Serializer.Bs64InventorySerializer;
+import org.nocraft.loperd.playerdatasync.Serializer.PotionEffectsSerializer;
 import org.nocraft.loperd.playerdatasync.Storage.implementation.StorageImplementation;
 import org.nocraft.loperd.playerdatasync.Storage.implementation.sql.connection.ConnectionFactory;
 import org.nocraft.loperd.playerdatasync.Serializer.PlayerInventorySerializer;
@@ -13,6 +18,7 @@ import org.nocraft.loperd.playerdatasync.Serializer.PlayerInventorySerializer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
@@ -20,9 +26,10 @@ import java.util.stream.Collectors;
 
 public class SqlStorage implements StorageImplementation {
 
-    private static final String INSERT_PLAYERDATA = "INSERT INTO {prefix}users (uuid,name,health,foodLevel,xpLevel,xpProgress,gameMode,potionEffects,inventory,enderChest,heldItemSlot,flight) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_PLAYERDATA = "UPDATE {prefix}users (uuid,name,health,foodLevel,xpLevel,xpProgress,gameMode,potionEffects,inventory,enderChest,heldItemSlot,flight) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String GET_PLAYERDATA = "SELECT * FROM {prefix}users WHERE uuid = ?"; // AND username = ?
+    private static final String INSERT_PLAYER_DATA = "INSERT INTO {prefix}users (uuid,name,health,food_level,xp_level,xp_progress,game_mode,potion_effects,inventory,ender_chest,held_item_slot,flight) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE_PLAYER_DATA = "UPDATE {prefix}users SET uuid = ?, name = ?, health = ?, food_level = ?, xp_level = ?, xp_progress = ?, game_mode = ?, potion_effects = ?, inventory = ?, ender_chest = ?, held_item_slot = ?, flight = ? WHERE uuid = ?";
+    private static final String GET_PLAYER_DATA = "SELECT * FROM {prefix}users WHERE uuid = ?"; // AND username = ?
+    private static final String GET_USERNAME = "SELECT name FROM {prefix}users WHERE uuid = ?";
     private final NoPlayerDataSync plugin;
 
     private final Function<String, String> statementProcessor;
@@ -32,7 +39,7 @@ public class SqlStorage implements StorageImplementation {
     public SqlStorage(NoPlayerDataSync plugin, ConnectionFactory connectionFactory, String tablePrefix) {
         this.plugin = plugin;
         this.connectionFactory = connectionFactory;
-        this.serializer = plugin.getPlayerInventorySerializer();
+        this.serializer = new PlayerInventorySerializer(new Bs64InventorySerializer());
         this.statementProcessor = connectionFactory.getStatementProcessor().compose(s -> s.replace("{prefix}", tablePrefix));
     }
 
@@ -72,32 +79,37 @@ public class SqlStorage implements StorageImplementation {
     public PlayerData loadPlayerData(UUID uniqueId, String username) throws Exception {
         PlayerData data = new PlayerData(uniqueId, username);
         try (Connection c = this.connectionFactory.getConnection()) {
-            try (PreparedStatement ps = c.prepareStatement(this.statementProcessor.apply(GET_PLAYERDATA))) {
+            try (PreparedStatement ps = c.prepareStatement(this.statementProcessor.apply(GET_PLAYER_DATA))) {
                 ps.setString(1, uniqueId.toString());
                 try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        data.setHealth(rs.getDouble("health"));
-                        data.setFoodLevel(rs.getInt("foodLevel"));
-                        data.setXpLevel(rs.getInt("xpLevel"));
-                        data.setXpProgress(data.getXpProgress());
-                        data.setGameMode(GameMode.valueOf(rs.getString("gameMode")));
-
-                        data.setString(8, potionEffects.getAsString());
-
-                        JsonObject inventory = serializer.serializeInventory(data.getSavedInventory());
-                        String enderChest = serializer.serializeItemStack(data.getEnderChest());
-
-                        data.setString(9, inventory.getAsString());
-                        data.setString(10, enderChest);
-                        data.setInt(11, data.getHeldItemSlot());
-                        data.setBoolean(12, data.isFlight());
-                    } else {
-                        return null;
+                    if (!rs.next()) {
+                        return data;
                     }
+
+                    data.setHealth(rs.getDouble("health"));
+                    data.setXpLevel(rs.getInt("xp_level"));
+                    data.setXpProgress(data.getXpProgress());
+                    data.setFoodLevel(rs.getInt("food_level"));
+                    data.setGameMode(GameMode.valueOf(rs.getString("game_mode")));
+
+                    data.setPotionEffects(PotionEffectsSerializer.deserialize(rs.getString("potion_effects")));
+
+                    data.setSavedInventory(createSavedInventory(rs.getString("inventory")));
+                    data.setEnderChest(serializer.deserializeItemStack(rs.getString("ender_chest")));
+
+                    data.setHeldItemSlot(rs.getInt("held_item_slot"));
+                    data.setFlight(rs.getBoolean("flight"));
                 }
             }
         }
-        return null;
+
+        return data;
+    }
+
+    private SavedPlayerInventory createSavedInventory(String contents) throws IOException {
+        JsonObject jsonInventory = (JsonObject) new JsonParser().parse(contents);
+        List<ItemStack[]> list = serializer.deserializeInventory(jsonInventory);
+        return new SavedPlayerInventory(list.get(0), list.get(1));
     }
 
     private void applySchema() throws IOException, SQLException {
@@ -155,40 +167,43 @@ public class SqlStorage implements StorageImplementation {
         }
     }
 
-    private void createPlayerData(PlayerData data) throws SQLException {
-        savePlayerData(data, INSERT_PLAYERDATA);
-    }
-
-    private void updatePlayerdata(PlayerData data) throws SQLException {
-        savePlayerData(data, UPDATE_PLAYERDATA);
-    }
-
-    public void savePlayerData(PlayerData data, String query) throws SQLException {
+    public void savePlayerData(PlayerData data) throws SQLException {
         try (Connection c = this.connectionFactory.getConnection()) {
-            try (PreparedStatement ps = c.prepareStatement(this.statementProcessor.apply(query))) {
+            try (PreparedStatement ps = c.prepareStatement(this.statementProcessor.apply(GET_USERNAME))) {
                 ps.setString(1, data.getUuid().toString());
-                ps.setString(2, data.getName());
-                ps.setDouble(3, data.getHealth());
-                ps.setFloat(4, data.getFoodLevel());
-                ps.setInt(5, data.getXpLevel());
-                ps.setDouble(6, data.getXpProgress());
-                ps.setString(7, data.getGameMode().toString());
-
-                JsonArray potionEffects = new JsonArray();
-                for (PotionEffect potionEffect : data.getPotionEffects()) {
-                    potionEffects.add(potionEffect.toString());
+                try (ResultSet rs = ps.executeQuery()) {
+                    savePlayerData(c, data, !rs.next() ? INSERT_PLAYER_DATA : UPDATE_PLAYER_DATA);
                 }
-                ps.setString(8, potionEffects.getAsString());
-
-                JsonObject inventory = serializer.serializeInventory(data.getSavedInventory());
-                String enderChest = serializer.serializeItemStack(data.getEnderChest());
-
-                ps.setString(9, inventory.getAsString());
-                ps.setString(10, enderChest);
-                ps.setInt(11, data.getHeldItemSlot());
-                ps.setBoolean(12, data.isFlight());
-                ps.execute();
             }
+        }
+    }
+
+    private void savePlayerData(Connection c, PlayerData data, String query) throws SQLException {
+        try (PreparedStatement ps = c.prepareStatement(this.statementProcessor.apply(query))) {
+            ps.setString(1, data.getUuid().toString());
+            ps.setString(2, data.getName());
+            ps.setDouble(3, data.getHealth());
+            ps.setFloat(4, data.getFoodLevel());
+            ps.setInt(5, data.getXpLevel());
+            ps.setDouble(6, data.getXpProgress());
+            ps.setString(7, data.getGameMode().toString());
+
+            JsonArray effects = PotionEffectsSerializer.serialize(data.getPotionEffects());
+            ps.setString(8, effects.toString());
+
+            JsonObject inventory = serializer.serializeInventory(data.getSavedInventory());
+            String enderChest = serializer.serializeItemStack(data.getEnderChest());
+
+            ps.setString(9, inventory.toString());
+            ps.setString(10, enderChest);
+            ps.setInt(11, data.getHeldItemSlot());
+            ps.setBoolean(12, data.isFlight());
+
+            if (query.equals(UPDATE_PLAYER_DATA)) {
+                ps.setString(13, data.getUuid().toString());
+            }
+
+            ps.execute();
         }
     }
 

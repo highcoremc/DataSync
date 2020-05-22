@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.bukkit.GameMode;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.nocraft.loperd.playerdatasync.Inventory.SavedPlayerInventory;
@@ -50,7 +51,7 @@ public class PlayerData {
 
     @Getter
     @Setter
-    private ItemStack[] enderChest;
+    private ItemStack[] enderChest = new ItemStack[27];
 
     @Getter
     @Setter
@@ -68,6 +69,11 @@ public class PlayerData {
     public PlayerData(@NonNull UUID uuid, @NonNull String name) {
         this.name = name;
         this.uuid = uuid;
+    }
+
+    public PlayerData(Player p) {
+        this.name = p.getName();
+        this.uuid = p.getUniqueId();
     }
 
     public boolean isDenyingTeleports() {

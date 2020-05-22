@@ -10,6 +10,8 @@ import org.bukkit.inventory.PlayerInventory;
 import org.nocraft.loperd.playerdatasync.Inventory.SavedPlayerInventory;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerInventorySerializer {
 
@@ -36,22 +38,25 @@ public class PlayerInventorySerializer {
         throw new IllegalStateException("Can not understand type of serialized value");
     }
 
-    public PlayerInventory deserializeInventory(JsonObject serializedInventory) throws IOException {
+    public List<ItemStack[]> deserializeInventory(JsonObject serializedInventory) throws IOException {
         String contentsValue = serializedInventory.get("content").getAsString();
         String armorValue = serializedInventory.get("armor").getAsString();
 
-        Inventory content = baseSerializer.deserializeInventory(contentsValue);
-        ItemStack[] armor = baseSerializer.deserializeItemStack(armorValue);
+        Inventory inventory = baseSerializer.deserializeInventory(contentsValue);
 
-        PlayerInventory inventory = (PlayerInventory) Bukkit.getServer().createInventory(null, InventoryType.PLAYER);
+        ArrayList<ItemStack[]> list = new ArrayList<>();
 
-        inventory.setArmorContents(armor);
-        inventory.setContents(content.getContents());
+        list.add(baseSerializer.deserializeItemStack(armorValue));
+        list.add(inventory.getContents());
 
-        return inventory;
+        return list;
     }
 
     public String serializeItemStack(ItemStack[] enderChest) {
         return baseSerializer.serializeItemStacks(enderChest);
+    }
+
+    public ItemStack[] deserializeItemStack(String contents) throws IOException {
+        return baseSerializer.deserializeItemStack(contents);
     }
 }
