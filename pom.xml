@@ -35,7 +35,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.2.3</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -44,34 +44,20 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.1</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <!-- Don't create the reduced pom file, as we don't deploy the shaded jar -->
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <minimizeJar>true</minimizeJar>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.postgresql</pattern>
+                                    <shadedPattern>org.nocraft.lib.postgresql</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>ninja.leaping.configurate</pattern>
+                                    <shadedPattern>org.nocraft.lib.configurate</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.zaxxer.hikari</pattern>
+                                    <shadedPattern>org.nocraft.lib.hikari</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
@@ -119,12 +105,6 @@
         </dependency>
         <dependency>
             <groupId>com.github.loperd</groupId>
-            <artifactId>DeltaExecutor</artifactId>
-            <version>1.0.4</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.loperd</groupId>
             <artifactId>DeltaRedis</artifactId>
             <version>3.0.0</version>
             <scope>provided</scope>
@@ -133,11 +113,22 @@
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>16.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.4-1200-jdbc41</version>
         </dependency>
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
             <version>3.4.5</version>
+        </dependency>
+        <dependency>
+            <groupId>ninja.leaping.configurate</groupId>
+            <artifactId>configurate-core</artifactId>
+            <version>3.3</version>
         </dependency>
     </dependencies>
 </project>

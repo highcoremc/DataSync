@@ -6,9 +6,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.nocraft.loperd.playerdatasync.Domain.Player.LockedPlayerManager;
+import org.nocraft.loperd.playerdatasync.Manager.LockedPlayerManager;
 import org.nocraft.loperd.playerdatasync.NoPlayerDataSync;
-import org.nocraft.loperd.playerdatasync.Domain.Player.PlayerData;
+import org.nocraft.loperd.playerdatasync.PlayerData;
+import org.nocraft.loperd.playerdatasync.Storage.Storage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,10 +20,12 @@ public class PlayerLoadListener extends NoListener {
     private final Map<UUID, PlayerData> pendingConnections = new HashMap<>();
     private final LockedPlayerManager lockedPlayerManager;
     private NoPlayerDataSync plugin;
+    private final Storage storage;
 
-    public PlayerLoadListener(NoPlayerDataSync plugin, LockedPlayerManager lockedPlayerManager) {
+    public PlayerLoadListener(NoPlayerDataSync plugin, Storage storage, LockedPlayerManager lockedPlayerManager) {
         super(plugin);
         this.plugin = plugin;
+        this.storage = storage;
         this.lockedPlayerManager = lockedPlayerManager;
     }
 

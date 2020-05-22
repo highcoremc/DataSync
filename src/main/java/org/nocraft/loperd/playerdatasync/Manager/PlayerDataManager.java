@@ -1,9 +1,11 @@
-package org.nocraft.loperd.playerdatasync.Domain.Player;
+package org.nocraft.loperd.playerdatasync.Manager;
 
 import lombok.NonNull;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
+import org.nocraft.loperd.playerdatasync.PlayerData;
+import org.nocraft.loperd.playerdatasync.Inventory.SavedPlayerInventory;
 import org.nocraft.loperd.playerdatasync.NoPlayerDataSync;
 
 public class PlayerDataManager {

@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.scheduler.BukkitTask;
-import org.nocraft.loperd.playerdatasync.Domain.Player.LockedPlayerManager;
+import org.nocraft.loperd.playerdatasync.Manager.LockedPlayerManager;
 import org.nocraft.loperd.playerdatasync.NoPlayerDataSync;
 
 import static com.gmail.tracebachi.DeltaRedis.Shared.ChatMessageHelper.format;
@@ -20,7 +20,6 @@ public class LockedPlayerListener extends NoListener {
 
     private LockedPlayerManager locked;
     private NoPlayerDataSync plugin;
-    private BukkitTask cleanupTask;
 
     public LockedPlayerListener(NoPlayerDataSync plugin, LockedPlayerManager locked) {
         super(plugin);
@@ -30,8 +29,6 @@ public class LockedPlayerListener extends NoListener {
 
     @Override
     public void shutdown() {
-        cleanupTask.cancel();
-        cleanupTask = null;
         locked.clear();
         locked = null;
 

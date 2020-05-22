@@ -1,28 +1,3 @@
-/*
- * This file is part of LuckPerms, licensed under the MIT License.
- *
- *  Copyright (c) lucko (Luck) <luck@lucko.me>
- *  Copyright (c) contributors
- *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
- *
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
- *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *  SOFTWARE.
- */
-
 package org.nocraft.loperd.playerdatasync.Storage.implementation.sql.connection.hikari;
 
 import com.google.common.collect.ImmutableList;
@@ -87,7 +62,7 @@ public abstract class HikariConnectionFactory implements ConnectionFactory {
             throw e;
         }
 
-        config.setPoolName("luckperms-hikari");
+        config.setPoolName("pdsync-hikari");
 
         appendConfigurationInfo(config);
 
@@ -166,7 +141,7 @@ public abstract class HikariConnectionFactory implements ConnectionFactory {
 
         PluginLogger logger = (PluginLogger) plugin.getLogger();
         logger.warning("A " + linkageError.getClass().getSimpleName() + " has occurred whilst initialising Hikari. This is likely due to classloading conflicts between other plugins.");
-        logger.warning("Please check for other plugins below (and try loading LuckPerms without them installed) before reporting the issue.");
+        logger.warning("Please check for other plugins below (and try loading NoPlayerDataSync without them installed) before reporting the issue.");
 
         for (String className : noteworthyClasses) {
             Class<?> clazz;

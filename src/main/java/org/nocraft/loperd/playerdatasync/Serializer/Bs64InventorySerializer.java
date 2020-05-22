@@ -3,44 +3,30 @@ package org.nocraft.loperd.playerdatasync.Serializer;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
+import org.nocraft.loperd.playerdatasync.Domain.InventorySerializer;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class PlayerDataSerializer {
-    /**
-     * Converts the player inventory to a String array of Base64 strings. First string is the content and second string is the armor.
-     *
-     * @param playerInventory to turn into an array of strings.
-     * @return Array of strings: [ main content, armor content ]
-     * @throws IllegalStateException
-     */
-    public static String[] playerInventoryToBase64(PlayerInventory playerInventory) throws IllegalStateException {
-        //get the main content part, this doesn't return the armor
-        String content = toBase64(playerInventory);
-        String armor = itemStackArrayToBase64(playerInventory.getArmorContents());
-
-        return new String[] { content, armor };
-    }
+public class Bs64InventorySerializer implements InventorySerializer<String, Inventory> {
 
     /**
-     *
      * A method to serialize an {@link ItemStack} array to Base64 String.
-     *
-     * <p />
-     *
-     * Based off of {@link #toBase64(Inventory)}.
+     * <p>
+     * <p/>
+     * <p>
+     * Based off of {@link Bs64InventorySerializer#toBase64(Inventory)} (Inventory)}.
      *
      * @param items to turn into a Base64 String.
      * @return Base64 string of the items.
      * @throws IllegalStateException
      */
-    public static String itemStackArrayToBase64(ItemStack[] items) throws IllegalStateException {
+    @Override
+    public String serializeItemStacks(ItemStack[] items) throws IllegalStateException {
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
@@ -49,8 +35,8 @@ public class PlayerDataSerializer {
             dataOutput.writeInt(items.length);
 
             // Save every element in the list
-            for (int i = 0; i < items.length; i++) {
-                dataOutput.writeObject(items[i]);
+            for (ItemStack item : items) {
+                dataOutput.writeObject(item);
             }
 
             // Serialize that array
@@ -58,6 +44,52 @@ public class PlayerDataSerializer {
             return Base64Coder.encodeLines(outputStream.toByteArray());
         } catch (Exception e) {
             throw new IllegalStateException("Unable to save item stacks.", e);
+        }
+    }
+
+    @Override
+    public Inventory deserializeInventory(String serializedInventory) throws IOException {
+        return fromBase64(serializedInventory);
+    }
+
+    /**
+     * Converts the player inventory to a String array of Base64 strings. First string is the content and second string is the armor.
+     *
+     * @param inventory to turn into string.
+     * @return string main content
+     * @throws IllegalStateException
+     */
+    @Override
+    public String serializeInventory(Inventory inventory) throws IllegalStateException {
+        return toBase64(inventory);
+    }
+
+    /**
+     * Gets an array of ItemStacks from Base64 string.
+     * <p>
+     * <p/>
+     * <p>
+     * Base off of {@link Bs64InventorySerializer#fromBase64(String)}.
+     *
+     * @param data Base64 string to convert to ItemStack array.
+     * @return ItemStack array created from the Base64 string.
+     * @throws IOException
+     */
+    public ItemStack[] deserializeItemStack(String data) throws IOException {
+        try {
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
+            BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
+            ItemStack[] items = new ItemStack[dataInput.readInt()];
+
+            // Read the serialized inventory
+            for (int i = 0; i < items.length; i++) {
+                items[i] = (ItemStack) dataInput.readObject();
+            }
+
+            dataInput.close();
+            return items;
+        } catch (ClassNotFoundException e) {
+            throw new IOException("Unable to decode class type.", e);
         }
     }
 
@@ -124,35 +156,6 @@ public class PlayerDataSerializer {
 
             dataInput.close();
             return inventory;
-        } catch (ClassNotFoundException e) {
-            throw new IOException("Unable to decode class type.", e);
-        }
-    }
-
-    /**
-     * Gets an array of ItemStacks from Base64 string.
-     *
-     * <p />
-     *
-     * Base off of {@link #fromBase64(String)}.
-     *
-     * @param data Base64 string to convert to ItemStack array.
-     * @return ItemStack array created from the Base64 string.
-     * @throws IOException
-     */
-    public static ItemStack[] itemStackArrayFromBase64(String data) throws IOException {
-        try {
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
-            BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
-            ItemStack[] items = new ItemStack[dataInput.readInt()];
-
-            // Read the serialized inventory
-            for (int i = 0; i < items.length; i++) {
-                items[i] = (ItemStack) dataInput.readObject();
-            }
-
-            dataInput.close();
-            return items;
         } catch (ClassNotFoundException e) {
             throw new IOException("Unable to decode class type.", e);
         }
