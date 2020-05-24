@@ -19,6 +19,7 @@ package org.nocraft.loperd.playerdatasync.Inventory;
 import com.google.common.base.Preconditions;
 import lombok.NonNull;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 /**

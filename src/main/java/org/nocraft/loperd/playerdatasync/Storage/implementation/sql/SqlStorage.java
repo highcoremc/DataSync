@@ -4,12 +4,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.bukkit.GameMode;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
+import org.nocraft.loperd.playerdatasync.Domain.Serializer.ItemStackSerializer;
 import org.nocraft.loperd.playerdatasync.Inventory.SavedPlayerInventory;
 import org.nocraft.loperd.playerdatasync.NoPlayerDataSync;
 import org.nocraft.loperd.playerdatasync.PlayerData;
-import org.nocraft.loperd.playerdatasync.Serializer.Bs64InventorySerializer;
 import org.nocraft.loperd.playerdatasync.Serializer.PotionEffectsSerializer;
 import org.nocraft.loperd.playerdatasync.Storage.implementation.StorageImplementation;
 import org.nocraft.loperd.playerdatasync.Storage.implementation.sql.connection.ConnectionFactory;
@@ -18,7 +16,6 @@ import org.nocraft.loperd.playerdatasync.Serializer.PlayerInventorySerializer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
@@ -30,16 +27,19 @@ public class SqlStorage implements StorageImplementation {
     private static final String UPDATE_PLAYER_DATA = "UPDATE {prefix}users SET uuid = ?, name = ?, health = ?, food_level = ?, xp_level = ?, xp_progress = ?, game_mode = ?, potion_effects = ?, inventory = ?, ender_chest = ?, held_item_slot = ?, flight = ? WHERE uuid = ?";
     private static final String GET_PLAYER_DATA = "SELECT * FROM {prefix}users WHERE uuid = ?"; // AND username = ?
     private static final String GET_USERNAME = "SELECT name FROM {prefix}users WHERE uuid = ?";
+
     private final NoPlayerDataSync plugin;
 
+    private final PlayerInventorySerializer playerInvSerializer;
     private final Function<String, String> statementProcessor;
     private final ConnectionFactory connectionFactory;
-    private final PlayerInventorySerializer serializer;
+    private final ItemStackSerializer serializer;
 
     public SqlStorage(NoPlayerDataSync plugin, ConnectionFactory connectionFactory, String tablePrefix) {
         this.plugin = plugin;
         this.connectionFactory = connectionFactory;
-        this.serializer = new PlayerInventorySerializer(new Bs64InventorySerializer());
+        this.serializer = this.plugin.getItemStackSerializer();
+        this.playerInvSerializer = this.plugin.getPlayerInventorySerializer();
         this.statementProcessor = connectionFactory.getStatementProcessor().compose(s -> s.replace("{prefix}", tablePrefix));
     }
 
@@ -94,8 +94,8 @@ public class SqlStorage implements StorageImplementation {
 
                     data.setPotionEffects(PotionEffectsSerializer.deserialize(rs.getString("potion_effects")));
 
-                    data.setSavedInventory(createSavedInventory(rs.getString("inventory")));
-                    data.setEnderChest(serializer.deserializeItemStack(rs.getString("ender_chest")));
+                    data.setSavedInventory(this.createSavedInventory(rs.getString("inventory")));
+                    data.setEnderChest(this.serializer.deserialize(rs.getString("ender_chest")));
 
                     data.setHeldItemSlot(rs.getInt("held_item_slot"));
                     data.setFlight(rs.getBoolean("flight"));
@@ -108,8 +108,8 @@ public class SqlStorage implements StorageImplementation {
 
     private SavedPlayerInventory createSavedInventory(String contents) throws IOException {
         JsonObject jsonInventory = (JsonObject) new JsonParser().parse(contents);
-        List<ItemStack[]> list = serializer.deserializeInventory(jsonInventory);
-        return new SavedPlayerInventory(list.get(0), list.get(1));
+
+        return playerInvSerializer.deserialize(jsonInventory);
     }
 
     private void applySchema() throws IOException, SQLException {
@@ -191,8 +191,8 @@ public class SqlStorage implements StorageImplementation {
             JsonArray effects = PotionEffectsSerializer.serialize(data.getPotionEffects());
             ps.setString(8, effects.toString());
 
-            JsonObject inventory = serializer.serializeInventory(data.getSavedInventory());
-            String enderChest = serializer.serializeItemStack(data.getEnderChest());
+            JsonObject inventory = this.playerInvSerializer.serialize(data.getSavedInventory());
+            String enderChest = this.serializer.serialize(data.getEnderChest());
 
             ps.setString(9, inventory.toString());
             ps.setString(10, enderChest);

@@ -27,8 +27,8 @@ public class LockedPlayerListener extends NoListener {
 
     @Override
     public void shutdown() {
-        locked.clear();
-        locked = null;
+        this.locked.clear();
+        this.locked = null;
 
         super.shutdown();
     }
@@ -37,7 +37,7 @@ public class LockedPlayerListener extends NoListener {
     public void onInventoryOpen(InventoryOpenEvent event) {
         HumanEntity player = event.getPlayer();
 
-        if (locked.getLockedPlayers().containsKey(player.getUniqueId())) {
+        if (this.locked.getLockedPlayers().containsKey(player.getUniqueId())) {
             player.sendMessage(format("PlayerLocked"));
             event.setCancelled(true);
         }
@@ -47,7 +47,7 @@ public class LockedPlayerListener extends NoListener {
     public void onInventoryInteract(InventoryInteractEvent event) {
         HumanEntity player = event.getWhoClicked();
 
-        if (locked.getLockedPlayers().containsKey(player.getUniqueId())) {
+        if (this.locked.getLockedPlayers().containsKey(player.getUniqueId())) {
             player.sendMessage(format("PlayerLocked"));
             event.setCancelled(true);
         }
@@ -57,7 +57,7 @@ public class LockedPlayerListener extends NoListener {
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
-        if (locked.getLockedPlayers().containsKey(player.getUniqueId())) {
+        if (this.locked.getLockedPlayers().containsKey(player.getUniqueId())) {
             player.sendMessage(format("PlayerLocked"));
             event.setCancelled(true);
         }
@@ -67,7 +67,7 @@ public class LockedPlayerListener extends NoListener {
     public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
 
-        if (locked.getLockedPlayers().containsKey(player.getUniqueId())) {
+        if (this.locked.getLockedPlayers().containsKey(player.getUniqueId())) {
             player.sendMessage(format("PlayerLocked"));
             event.setCancelled(true);
         }
@@ -77,7 +77,7 @@ public class LockedPlayerListener extends NoListener {
     public void onPlayerPickupItemEvent(PlayerPickupItemEvent event) {
         Player player = event.getPlayer();
 
-        if (locked.getLockedPlayers().containsKey(player.getUniqueId())) {
+        if (this.locked.getLockedPlayers().containsKey(player.getUniqueId())) {
             player.sendMessage(format("PlayerLocked"));
             event.setCancelled(true);
         }
@@ -91,7 +91,7 @@ public class LockedPlayerListener extends NoListener {
 
         Player player = (Player) event.getEntity();
 
-        if (locked.getLockedPlayers().containsKey(player.getUniqueId())) {
+        if (this.locked.getLockedPlayers().containsKey(player.getUniqueId())) {
             player.sendMessage(format("PlayerLocked"));
             event.setCancelled(true);
         }

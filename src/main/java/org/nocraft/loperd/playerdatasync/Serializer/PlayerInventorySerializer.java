@@ -1,62 +1,52 @@
 package org.nocraft.loperd.playerdatasync.Serializer;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import org.bukkit.Bukkit;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
+import org.jetbrains.annotations.NotNull;
+import org.nocraft.loperd.playerdatasync.Domain.Serializer.ItemStackSerializer;
+import org.nocraft.loperd.playerdatasync.Domain.Serializer.ItemStackSerializerType;
 import org.nocraft.loperd.playerdatasync.Inventory.SavedPlayerInventory;
+import org.bukkit.inventory.ItemStack;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PlayerInventorySerializer {
 
-    private final Bs64InventorySerializer baseSerializer;
+    private final ItemStackSerializer baseSerializer;
 
-    public PlayerInventorySerializer(Bs64InventorySerializer serializer) {
-        baseSerializer = serializer;
+    public PlayerInventorySerializer(ItemStackSerializer serializer) {
+        this.baseSerializer = serializer;
     }
 
-    public JsonObject serializeInventory(SavedPlayerInventory inventory) throws IllegalStateException {
+    public JsonObject serialize(@NotNull SavedPlayerInventory inventory) throws IllegalStateException {
         //get the main content part, this doesn't return the armor
-        String content = baseSerializer.serializeItemStacks(inventory.getStorage());
-        String armor = baseSerializer.serializeItemStacks(inventory.getArmor());
+        String content = baseSerializer.serialize(inventory.getStorage());
+        String armor = baseSerializer.serialize(inventory.getArmor());
 
         JsonObject result = new JsonObject();
 
-        if (content != null && armor != null) {
-            result.add("content", new JsonPrimitive(content));
-            result.add("armor", new JsonPrimitive(armor));
-
-            return result;
+        if (content == null || armor == null) {
+            throw new IllegalStateException("Can not understand type of serialized value");
         }
 
-        throw new IllegalStateException("Can not understand type of serialized value");
+        result.add("type", new JsonPrimitive(baseSerializer.getType().toString()));
+        result.add("content", new JsonPrimitive(content));
+        result.add("armor", new JsonPrimitive(armor));
+
+        return result;
     }
 
-    public List<ItemStack[]> deserializeInventory(JsonObject serializedInventory) throws IOException {
+    public SavedPlayerInventory deserialize(@NotNull JsonObject serializedInventory) throws IOException {
         String contentsValue = serializedInventory.get("content").getAsString();
+        String serializerType = serializedInventory.get("type").getAsString();
         String armorValue = serializedInventory.get("armor").getAsString();
 
-        Inventory inventory = baseSerializer.deserializeInventory(contentsValue);
+        ItemStackSerializerType type = ItemStackSerializerType.valueOf(serializerType);
+        ItemStackSerializer serializer = ItemStackSerializerFactory.create(type);
 
-        ArrayList<ItemStack[]> list = new ArrayList<>();
+        ItemStack[] inventory = serializer.deserialize(contentsValue);
+        ItemStack[] enderChest = serializer.deserialize(armorValue);
 
-        list.add(baseSerializer.deserializeItemStack(armorValue));
-        list.add(inventory.getContents());
-
-        return list;
-    }
-
-    public String serializeItemStack(ItemStack[] enderChest) {
-        return baseSerializer.serializeItemStacks(enderChest);
-    }
-
-    public ItemStack[] deserializeItemStack(String contents) throws IOException {
-        return baseSerializer.deserializeItemStack(contents);
+        return new SavedPlayerInventory(enderChest, inventory);
     }
 }
