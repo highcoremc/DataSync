@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -67,14 +68,14 @@ public class SqlStorage implements StorageImplementation {
 
     @Override
     @Nullable
-    public PlayerData loadPlayerData(UUID uniqueId, String username) throws Exception {
+    public Optional<PlayerData> loadPlayerData(UUID uniqueId, String username) throws Exception {
         PlayerData playerData = PlayerDataFactory.create(uniqueId, username);
         try (Connection c = this.connectionFactory.getConnection()) {
             try (PreparedStatement ps = c.prepareStatement(this.statementProcessor.apply(GET_PLAYER_DATA))) {
                 ps.setString(1, uniqueId.toString());
                 try (ResultSet rs = ps.executeQuery()) {
                     if (!rs.next()) {
-                        return null;
+                        return Optional.empty();
                     }
 
                     PlayerDataFactory.applyFromDataBase(playerData, rs);
@@ -82,7 +83,7 @@ public class SqlStorage implements StorageImplementation {
             }
         }
 
-        return playerData;
+        return Optional.of(playerData);
     }
 
     private void applySchema() throws IOException, SQLException {

@@ -1,5 +1,6 @@
 package org.nocraft.loperd.playerdatasync.spigot.listener;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.nocraft.loperd.playerdatasync.common.Registerable;

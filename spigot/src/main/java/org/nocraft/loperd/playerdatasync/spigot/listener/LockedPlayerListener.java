@@ -7,13 +7,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.nocraft.loperd.playerdatasync.spigot.PDSyncPluginBukkit;
 import org.nocraft.loperd.playerdatasync.spigot.manager.LockedPlayerManager;
-
-import static com.gmail.tracebachi.DeltaRedis.Shared.ChatMessageHelper.format;
 
 public class LockedPlayerListener extends PDSyncListenerBukkit {
 
@@ -37,7 +35,6 @@ public class LockedPlayerListener extends PDSyncListenerBukkit {
         HumanEntity player = event.getPlayer();
 
         if (this.locked.getLockedPlayers().containsKey(player.getUniqueId())) {
-            player.sendMessage(format("PlayerLocked"));
             event.setCancelled(true);
         }
     }
@@ -47,7 +44,6 @@ public class LockedPlayerListener extends PDSyncListenerBukkit {
         HumanEntity player = event.getWhoClicked();
 
         if (this.locked.getLockedPlayers().containsKey(player.getUniqueId())) {
-            player.sendMessage(format("PlayerLocked"));
             event.setCancelled(true);
         }
     }
@@ -57,7 +53,6 @@ public class LockedPlayerListener extends PDSyncListenerBukkit {
         Player player = event.getPlayer();
 
         if (this.locked.getLockedPlayers().containsKey(player.getUniqueId())) {
-            player.sendMessage(format("PlayerLocked"));
             event.setCancelled(true);
         }
     }
@@ -67,17 +62,15 @@ public class LockedPlayerListener extends PDSyncListenerBukkit {
         Player player = event.getPlayer();
 
         if (this.locked.getLockedPlayers().containsKey(player.getUniqueId())) {
-            player.sendMessage(format("PlayerLocked"));
             event.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPlayerPickupItemEvent(PlayerPickupItemEvent event) {
+    public void onPlayerPickupItemEvent(PlayerAttemptPickupItemEvent event) {
         Player player = event.getPlayer();
 
         if (this.locked.getLockedPlayers().containsKey(player.getUniqueId())) {
-            player.sendMessage(format("PlayerLocked"));
             event.setCancelled(true);
         }
     }
@@ -91,7 +84,6 @@ public class LockedPlayerListener extends PDSyncListenerBukkit {
         Player player = (Player) event.getEntity();
 
         if (this.locked.getLockedPlayers().containsKey(player.getUniqueId())) {
-            player.sendMessage(format("PlayerLocked"));
             event.setCancelled(true);
         }
     }

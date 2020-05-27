@@ -1,6 +1,6 @@
 package org.nocraft.loperd.playerdatasync.spigot;
 
-import org.nocraft.loperd.playerdatasync.spigot.scheduler.AbstractJavaScheduler;
+import org.nocraft.loperd.playerdatasync.common.scheduler.AbstractJavaScheduler;
 import org.nocraft.loperd.playerdatasync.common.scheduler.SchedulerAdapter;
 
 import java.util.concurrent.Executor;

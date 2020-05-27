@@ -7,6 +7,7 @@ import org.nocraft.loperd.playerdatasync.common.storage.implementation.StorageIm
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
@@ -80,7 +81,7 @@ public class Storage {
         }
     }
 
-    public CompletableFuture<PlayerData> loadPlayerData(UUID uniqueId, String username) {
+    public CompletableFuture<Optional<PlayerData>> loadPlayerData(UUID uniqueId, String username) {
         return makeFuture(() -> this.implementation.loadPlayerData(uniqueId, username));
     }
 

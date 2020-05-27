@@ -4,12 +4,11 @@ import com.google.gson.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class PotionEffectsSerializer implements Serializable {
+public class PotionEffectsSerializer {
 
     static JsonArray toJsonObject(Collection<PotionEffect> effects) {
         JsonArray result = new JsonArray();

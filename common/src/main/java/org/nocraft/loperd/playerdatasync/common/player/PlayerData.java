@@ -13,9 +13,9 @@ public class PlayerData {
     private PlayerHealth health = new PlayerHealth();
     private PlayerGameMode gameMode = PlayerGameMode.SURVIVAL;
 
-    private String potionEffects = null;
-    private String savedInventory = "";
-    private String enderChest = "";
+    private String potionEffects;
+    private String savedInventory;
+    private String enderChest;
 
     private int heldItemSlot = 0;
     private boolean vanished = false;

@@ -1,9 +1,7 @@
-package org.nocraft.loperd.playerdatasync.spigot.scheduler;
+package org.nocraft.loperd.playerdatasync.common.scheduler;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.NonNull;
-import org.nocraft.loperd.playerdatasync.common.scheduler.SchedulerAdapter;
-import org.nocraft.loperd.playerdatasync.common.scheduler.SchedulerTask;
 
 import java.util.concurrent.*;
 

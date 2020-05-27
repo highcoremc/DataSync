@@ -14,7 +14,7 @@ public interface StorageImplementation extends Shutdownable {
 
     void init() throws Exception;
 
-    PlayerData loadPlayerData(UUID uniqueId, String username) throws Exception;
+    Optional<PlayerData> loadPlayerData(UUID uniqueId, String username) throws Exception;
 
     void savePlayerData(PlayerData playerData) throws Exception;
 
