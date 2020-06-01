@@ -1,6 +1,6 @@
 package org.nocraft.loperd.playerdatasync.common.config;
 
-import org.nocraft.loperd.playerdatasync.common.plugin.PDSyncPlugin;
+import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
 
 /**
  * The master configuration.
@@ -12,7 +12,7 @@ public interface Configuration {
      *
      * @return the plugin instance
      */
-    PDSyncPlugin getPlugin();
+    DataSyncPlugin getPlugin();
 
     /**
      * Reloads the configuration.

@@ -3,7 +3,7 @@ package org.nocraft.loperd.playerdatasync.common.storage.implementation.sql.conn
 import com.google.common.collect.ImmutableList;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.nocraft.loperd.playerdatasync.common.plugin.PDSyncPlugin;
+import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
 import org.nocraft.loperd.playerdatasync.common.plugin.PluginLogger;
 import org.nocraft.loperd.playerdatasync.common.storage.implementation.sql.connection.ConnectionFactory;
 import org.nocraft.loperd.playerdatasync.common.storage.misc.StorageCredentials;
@@ -51,7 +51,7 @@ public abstract class HikariConnectionFactory implements ConnectionFactory {
     }
 
     @Override
-    public void init(PDSyncPlugin plugin) {
+    public void init(DataSyncPlugin plugin) {
         HikariConfig config;
         try {
             config = new HikariConfig();
@@ -129,7 +129,7 @@ public abstract class HikariConnectionFactory implements ConnectionFactory {
         return connection;
     }
 
-    private static void handleLinkageError(LinkageError linkageError, PDSyncPlugin plugin) {
+    private static void handleLinkageError(LinkageError linkageError, DataSyncPlugin plugin) {
         List<String> noteworthyClasses = ImmutableList.of(
                 "org.slf4j.LoggerFactory",
                 "org.slf4j.ILoggerFactory",

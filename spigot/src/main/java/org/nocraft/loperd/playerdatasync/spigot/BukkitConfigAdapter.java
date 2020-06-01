@@ -1,10 +1,9 @@
 package org.nocraft.loperd.playerdatasync.spigot;
 
-import org.bukkit.GameMode;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.nocraft.loperd.playerdatasync.common.config.Adapter.ConfigurationAdapter;
-import org.nocraft.loperd.playerdatasync.common.plugin.PDSyncPlugin;
+import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
 
 import java.io.File;
 import java.util.*;
@@ -12,10 +11,10 @@ import java.util.*;
 public class BukkitConfigAdapter implements ConfigurationAdapter {
 
     private YamlConfiguration configuration;
-    private final PDSyncPlugin plugin;
+    private final DataSyncPlugin plugin;
     private final File file;
 
-    public BukkitConfigAdapter(PDSyncPlugin plugin, File file) {
+    public BukkitConfigAdapter(DataSyncPlugin plugin, File file) {
         this.plugin = plugin;
         this.file = file;
         reload();
@@ -74,7 +73,7 @@ public class BukkitConfigAdapter implements ConfigurationAdapter {
     }
 
     @Override
-    public PDSyncPlugin getPlugin() {
+    public DataSyncPlugin getPlugin() {
         return this.plugin;
     }
 }

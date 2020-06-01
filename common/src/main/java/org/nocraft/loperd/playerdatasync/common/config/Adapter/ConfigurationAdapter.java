@@ -1,13 +1,13 @@
 package org.nocraft.loperd.playerdatasync.common.config.Adapter;
 
-import org.nocraft.loperd.playerdatasync.common.plugin.PDSyncPlugin;
+import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
 
 import java.util.List;
 import java.util.Map;
 
 public interface ConfigurationAdapter {
 
-    PDSyncPlugin getPlugin();
+    DataSyncPlugin getPlugin();
 
     void reload();
 

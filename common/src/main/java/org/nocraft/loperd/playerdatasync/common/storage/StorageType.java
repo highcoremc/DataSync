@@ -6,13 +6,13 @@ import java.util.List;
 
 public enum StorageType {
 
-    // Remote databases
+    // SQL storage
     MARIADB("MariaDB", "mariadb"),
     MYSQL("MySQL", "mysql"),
     POSTGRESQL("PostgreSQL", "postgresql"),
 
-    // Custom
-    CUSTOM("Custom", "custom");
+    // NoSQL Storage
+    REDIS("Redis", "redis");
 
     private final String name;
 

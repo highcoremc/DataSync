@@ -12,18 +12,7 @@
     <artifactId>playerdatasync.common</artifactId>
     <packaging>jar</packaging>
 
-    <name>PlayerDataSyncCommon</name>
-
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-        <repository>
-            <id>codemc-repo</id>
-            <url>https://repo.codemc.io/repository/maven-public/</url>
-        </repository>
-    </repositories>
+    <name>DataSyncCommon</name>
 
     <build>
         <plugins>
@@ -51,56 +40,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <dependencies>
-        <!-- Libraries that we shade into the project -->
-
-        <!--Database pooling-->
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>3.4.5</version>
-        </dependency>
-
-        <!--Logging framework implements slf4j which is required by hikari-->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-jdk14</artifactId>
-            <version>1.7.30</version>
-        </dependency>
-
-        <!-- APIs we can use because they are available in all platforms (Spigot, Bungee) -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>17.0</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.2.4</version>
-        </dependency>
-
-        <dependency>
-            <groupId>ninja.leaping.configurate</groupId>
-            <artifactId>configurate-core</artifactId>
-            <version>3.3</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>18.0.0</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
 </project>

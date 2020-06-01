@@ -1,19 +1,20 @@
 package org.nocraft.loperd.playerdatasync.common.storage;
 
-import org.nocraft.loperd.playerdatasync.common.plugin.PDSyncPlugin;
+import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
 import org.nocraft.loperd.playerdatasync.common.config.ConfigKeys;
+import org.nocraft.loperd.playerdatasync.common.storage.implementation.NoSqlStorage;
 import org.nocraft.loperd.playerdatasync.common.storage.implementation.SqlStorage;
 import org.nocraft.loperd.playerdatasync.common.storage.implementation.StorageImplementation;
-import org.nocraft.loperd.playerdatasync.common.storage.implementation.custom.CustomStorageProviders;
+import org.nocraft.loperd.playerdatasync.common.storage.implementation.nosql.RedisConnectionFactory;
 import org.nocraft.loperd.playerdatasync.common.storage.implementation.sql.connection.hikari.MariaDbConnectionFactory;
 import org.nocraft.loperd.playerdatasync.common.storage.implementation.sql.connection.hikari.MySqlConnectionFactory;
 import org.nocraft.loperd.playerdatasync.common.storage.implementation.sql.connection.hikari.PostgreConnectionFactory;
 
 public class StorageFactory {
 
-    private final PDSyncPlugin plugin;
+    private final DataSyncPlugin plugin;
 
-    public StorageFactory(PDSyncPlugin plugin) {
+    public StorageFactory(DataSyncPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -28,8 +29,6 @@ public class StorageFactory {
 
     private StorageImplementation createNewImplementation(StorageType method) {
         switch (method) {
-            case CUSTOM:
-                return CustomStorageProviders.getProvider().provide(this.plugin);
             case MARIADB:
                 return new SqlStorage(
                         this.plugin,
@@ -47,6 +46,11 @@ public class StorageFactory {
                         this.plugin,
                         new PostgreConnectionFactory(this.plugin.getConfiguration().get(ConfigKeys.DATABASE_VALUES)),
                         this.plugin.getConfiguration().get(ConfigKeys.SQL_TABLE_PREFIX)
+                );
+            case REDIS:
+                return new NoSqlStorage(
+                        this.plugin,
+                        new RedisConnectionFactory(this.plugin.getConfiguration().get(ConfigKeys.DATABASE_VALUES))
                 );
             default:
                 throw new RuntimeException("Unknown method: " + method);

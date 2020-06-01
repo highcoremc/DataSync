@@ -1,5 +1,0 @@
-name: PlayerDataSync
-version: ${project.version}
-main: org.nocraft.loperd.playerdatasync.bungee.PDSyncBootstrapBungee
-description: Another plugin for synchronize player inventory between servers.
-depends: []

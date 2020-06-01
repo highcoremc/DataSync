@@ -9,7 +9,7 @@ public class BukkitSchedulerAdapter extends AbstractJavaScheduler implements Sch
 
     protected Executor sync;
 
-    public BukkitSchedulerAdapter(PDSyncBootstrapBukkit plugin) {
+    public BukkitSchedulerAdapter(DataSyncBootstrapBukkit plugin) {
         this.sync = r -> plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, r);
     }
 

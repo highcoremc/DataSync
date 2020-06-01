@@ -3,7 +3,7 @@ package org.nocraft.loperd.playerdatasync.common.config.Adapter;
 import com.google.common.base.Splitter;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
-import org.nocraft.loperd.playerdatasync.common.plugin.PDSyncPlugin;
+import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -13,11 +13,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public abstract class ConfigurateAdapter implements ConfigurationAdapter {
-    private final PDSyncPlugin plugin;
+    private final DataSyncPlugin plugin;
     private final Path path;
     private ConfigurationNode root;
 
-    public ConfigurateAdapter(PDSyncPlugin plugin, Path path) {
+    public ConfigurateAdapter(DataSyncPlugin plugin, Path path) {
         this.plugin = plugin;
         this.path = path;
         reload();
@@ -91,7 +91,7 @@ public abstract class ConfigurateAdapter implements ConfigurationAdapter {
     }
 
     @Override
-    public PDSyncPlugin getPlugin() {
+    public DataSyncPlugin getPlugin() {
         return this.plugin;
     }
 }
