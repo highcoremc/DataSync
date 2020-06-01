@@ -1,7 +1,7 @@
 package org.nocraft.loperd.playerdatasync.common.config;
 
 import org.nocraft.loperd.playerdatasync.common.config.Adapter.ConfigurationAdapter;
-import org.nocraft.loperd.playerdatasync.common.plugin.PDSyncPlugin;
+import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
 
 /**
  * An abstract implementation of {@link Configuration}.
@@ -18,10 +18,10 @@ public class PluginConfiguration implements Configuration {
      */
     private Object[] values = null;
 
-    private final PDSyncPlugin plugin;
+    private final DataSyncPlugin plugin;
     private final ConfigurationAdapter adapter;
 
-    public PluginConfiguration(PDSyncPlugin plugin, ConfigurationAdapter adapter) {
+    public PluginConfiguration(DataSyncPlugin plugin, ConfigurationAdapter adapter) {
         this.plugin = plugin;
         this.adapter = adapter;
 
@@ -64,7 +64,7 @@ public class PluginConfiguration implements Configuration {
     }
 
     @Override
-    public PDSyncPlugin getPlugin() {
+    public DataSyncPlugin getPlugin() {
         return this.plugin;
     }
 }

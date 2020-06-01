@@ -1,3 +1,3 @@
-# PlayerDataSync
+# DataSync
 
 Simple Bukkit/Spigot/Paper plugin for synchronize player inventory, game level, armor, etc..

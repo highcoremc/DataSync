@@ -10,16 +10,16 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.nocraft.loperd.playerdatasync.spigot.PDSyncPluginBukkit;
+import org.nocraft.loperd.playerdatasync.spigot.DataSyncPluginBukkit;
 import org.nocraft.loperd.playerdatasync.spigot.manager.LockedPlayerManager;
 
-public class LockedPlayerListener extends PDSyncListenerBukkit {
+public class LockedPlayerListener extends DataSyncListenerBukkit {
 
     private LockedPlayerManager locked;
 
-    public LockedPlayerListener(PDSyncPluginBukkit plugin, LockedPlayerManager locked) {
+    public LockedPlayerListener(DataSyncPluginBukkit plugin) {
         super(plugin);
-        this.locked = locked;
+        this.locked = plugin.getLockedPlayerManager();
     }
 
     @Override

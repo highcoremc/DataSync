@@ -5,27 +5,28 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.nocraft.loperd.playerdatasync.common.DataSyncPlayer;
 import org.nocraft.loperd.playerdatasync.common.storage.Storage;
-import org.nocraft.loperd.playerdatasync.spigot.PDSyncPluginBukkit;
-import org.nocraft.loperd.playerdatasync.spigot.PlayerDataLife;
+import org.nocraft.loperd.playerdatasync.common.storage.StorageAdapter;
+import org.nocraft.loperd.playerdatasync.spigot.BukkitStorageAdapter;
+import org.nocraft.loperd.playerdatasync.spigot.DataSyncPluginBukkit;
+import org.nocraft.loperd.playerdatasync.spigot.PlayerData;
+import org.nocraft.loperd.playerdatasync.spigot.PlayerDataApply;
 import org.nocraft.loperd.playerdatasync.spigot.event.PlayerLoadedEvent;
 import org.nocraft.loperd.playerdatasync.spigot.manager.LockedPlayerManager;
-import org.nocraft.loperd.playerdatasync.spigot.runnable.PlayerDataSaver;
+import org.nocraft.loperd.playerdatasync.spigot.serialization.BukkitSerializer;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Optional;
 import java.util.UUID;
 
-public class PlayerLoadListener extends PDSyncListenerBukkit {
+public class PlayerLoadListener extends DataSyncListenerBukkit {
 
     private final LockedPlayerManager lockedPlayerManager;
-    private final PDSyncPluginBukkit plugin;
-    private final Storage storage;
+    private final DataSyncPluginBukkit plugin;
 
-    public PlayerLoadListener(PDSyncPluginBukkit plugin, Storage storage) {
+    public PlayerLoadListener(DataSyncPluginBukkit plugin) {
         super(plugin);
         this.plugin = plugin;
-        this.storage = storage;
         this.lockedPlayerManager = plugin.getLockedPlayerManager();
     }
 
@@ -35,16 +36,19 @@ public class PlayerLoadListener extends PDSyncListenerBukkit {
         UUID uuid = player.getUniqueId();
         String name = player.getName();
 
-        this.playerReset(player);
+        this.playerReset(player); // used for developing
         this.lockedPlayerManager.add(uuid);
 
-        this.storage.loadPlayerData(uuid, name).thenAccept(result -> {
+        Optional<PlayerData> result = this.plugin.getStorage().loadPlayerData(uuid, name).join();
+
+//        .thenAccept(result -> {
             if (!result.isPresent()) {
                 this.lockedPlayerManager.remove(uuid);
                 return;
             }
-            this.plugin.getPlayerSyncQueue().offer(new PlayerDataLife(result.get()));
-        });
+
+            this.plugin.applyPlayerData(result.get());
+//        });
     }
 
     private void playerReset(Player player) {
@@ -71,15 +75,10 @@ public class PlayerLoadListener extends PDSyncListenerBukkit {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
+        UUID uniqueId = player.getUniqueId();
 
-        long lastSavedTime = this.plugin.getPlayerDataSaveStatusMap().get(player.getUniqueId());
-        long currentTime = System.currentTimeMillis();
-
-        if ((lastSavedTime - currentTime) > 1000) {
-            this.plugin.getScheduler().executeAsync(new PlayerDataSaver(plugin, player));
-        }
-
-        this.lockedPlayerManager.remove(player.getUniqueId());
-        this.plugin.getPlayerDataSaveStatusMap().remove(player.getUniqueId());
+        this.plugin.getStorage().savePlayerData(player).thenAccept(ignored -> {
+            this.lockedPlayerManager.remove(uniqueId);
+        });
     }
 }

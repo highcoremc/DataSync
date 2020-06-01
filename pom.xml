@@ -7,9 +7,8 @@
     <artifactId>playerdatasync</artifactId>
     <packaging>pom</packaging>
 
-    <name>PlayerDataSync</name>
+    <name>DataSync</name>
     <version>0.1-SNAPSHOT</version>
-
 
     <description>
         Plugin for synchronize all playerdata like armor, inventory, enderchest, etc..
@@ -18,56 +17,142 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
         <java.version>1.8</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
     </properties>
 
     <modules>
         <module>common</module>
         <module>spigot</module>
-        <module>bungee</module>
+        <!--assembly must be in the end of list-->
+        <module>assembly</module>
     </modules>
-
-    <!--Deployment configuration for the Maven repository-->
-    <distributionManagement>
-        <snapshotRepository>
-            <id>codemc-snapshots</id>
-            <url>https://repo.codemc.io/repository/maven-snapshots/</url>
-        </snapshotRepository>
-        <repository>
-            <id>codemc-releases</id>
-            <url>https://repo.codemc.io/repository/maven-releases/</url>
-        </repository>
-    </distributionManagement>
 
     <build>
         <!--Just use the project name to replace an old version of the plugin if the user does only copy-paste-->
         <finalName>${project.name}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
 
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <!--Replace variables-->
-                <filtering>true</filtering>
-            </resource>
-        </resources>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.3</version>
+                <configuration>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <!-- Keep the file clean, don't include every single pom from all modules -->
+                            <excludes>
+                                <exclude>META-INF/maven/**</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.lambdaworks.redis</pattern>
+                                    <shadedPattern>org.nocraft.lib.redis</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.zaxxer.hikari</pattern>
+                                    <shadedPattern>org.nocraft.lib.hikari</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>ninja.leaping.configurate</pattern>
+                                    <shadedPattern>org.nocraft.lib.configurate</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.postgresql</pattern>
+                                    <shadedPattern>org.nocraft.lib.postgresql</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13</version>
-            <scope>test</scope>
+            <groupId>biz.paluch.redis</groupId>
+            <artifactId>lettuce</artifactId>
+            <version>4.5.0.Final</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--Database pooling-->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>3.4.5</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--Logging framework implements slf4j which is required by hikari-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>1.7.30</version>
+            <type>pom</type>
+        </dependency>
+
+        <!-- APIs we can use because they are available in all platforms (Spigot, Bungee) -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>17.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.4</version>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>ninja.leaping.configurate</groupId>
+            <artifactId>configurate-core</artifactId>
+            <version>3.3</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>19.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.4-1200-jdbc41</version>
+            <scope>сompile</scope>
         </dependency>
     </dependencies>
 </project>

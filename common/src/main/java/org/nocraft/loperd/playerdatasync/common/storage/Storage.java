@@ -1,8 +1,8 @@
 package org.nocraft.loperd.playerdatasync.common.storage;
 
-import org.nocraft.loperd.playerdatasync.common.plugin.PDSyncPlugin;
-import org.nocraft.loperd.playerdatasync.common.player.PlayerData;
+import org.nocraft.loperd.playerdatasync.common.DataSyncPlayer;
 import org.nocraft.loperd.playerdatasync.common.Throwing;
+import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
 import org.nocraft.loperd.playerdatasync.common.storage.implementation.StorageImplementation;
 
 import java.util.Collection;
@@ -16,11 +16,11 @@ import java.util.concurrent.CompletionException;
 /**
  * Provides a {@link CompletableFuture} based API for interacting with a {@link StorageImplementation}.
  */
-public class Storage {
-    private final PDSyncPlugin plugin;
+public class Storage implements StorageAdapter<DataSyncPlayer, String> {
+    private final DataSyncPlugin plugin;
     private final StorageImplementation implementation;
 
-    public Storage(PDSyncPlugin plugin, StorageImplementation implementation) {
+    public Storage(DataSyncPlugin plugin, StorageImplementation implementation) {
         this.plugin = plugin;
         this.implementation = implementation;
     }
@@ -81,19 +81,18 @@ public class Storage {
         }
     }
 
-    public CompletableFuture<Optional<PlayerData>> loadPlayerData(UUID uniqueId, String username) {
+    @Override
+    public CompletableFuture<Optional<String>> loadPlayerData(UUID uniqueId, String username) {
         return makeFuture(() -> this.implementation.loadPlayerData(uniqueId, username));
     }
 
-    public CompletableFuture<Void> savePlayerData(PlayerData playerData) {
-        return makeFuture(() -> this.implementation.savePlayerData(playerData));
-    }
-
-    public CompletableFuture<UUID> getPlayerUniqueId(String username) {
-        return makeFuture(() -> this.implementation.getPlayerUniqueId(username));
-    }
-
-    public CompletableFuture<String> getPlayerName(UUID uniqueId) {
-        return makeFuture(() -> this.implementation.getPlayerName(uniqueId));
+    @Override
+    public CompletableFuture<Void> savePlayerData(DataSyncPlayer player) {
+        try {
+            this.implementation.savePlayerData(player);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return makeFuture(() -> this.implementation.savePlayerData(player));
     }
 }

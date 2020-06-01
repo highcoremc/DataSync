@@ -1,9 +1,7 @@
 package org.nocraft.loperd.playerdatasync.common.storage.implementation;
 
-import org.jetbrains.annotations.Nullable;
-import org.nocraft.loperd.playerdatasync.common.plugin.PDSyncPlugin;
-import org.nocraft.loperd.playerdatasync.common.player.PlayerData;
-import org.nocraft.loperd.playerdatasync.common.PlayerDataFactory;
+import org.nocraft.loperd.playerdatasync.common.DataSyncPlayer;
+import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
 import org.nocraft.loperd.playerdatasync.common.storage.implementation.sql.SchemaReader;
 import org.nocraft.loperd.playerdatasync.common.storage.implementation.sql.connection.ConnectionFactory;
 
@@ -18,24 +16,24 @@ import java.util.stream.Collectors;
 
 public class SqlStorage implements StorageImplementation {
 
-    private static final String INSERT_PLAYER_DATA = "INSERT INTO {prefix}users (uuid,name,health,food_level,xp_level,xp_progress,game_mode,potion_effects,inventory,ender_chest,held_item_slot,flight) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_PLAYER_DATA = "UPDATE {prefix}users SET uuid = ?, name = ?, health = ?, food_level = ?, xp_level = ?, xp_progress = ?, game_mode = ?, potion_effects = ?, inventory = ?, ender_chest = ?, held_item_slot = ?, flight = ? WHERE uuid = ?";
+    private static final String INSERT_PLAYER_DATA = "INSERT INTO {prefix}users (uuid,name,data) VALUES (?, ?, ?)";
+    private static final String UPDATE_PLAYER_DATA = "UPDATE {prefix}users SET uuid = ?, name = ?, data = ? WHERE uuid = ?";
     private static final String GET_PLAYER_DATA = "SELECT * FROM {prefix}users WHERE uuid = ?"; // AND username = ?
     private static final String GET_USERNAME = "SELECT name FROM {prefix}users WHERE uuid = ?";
 
-    private final PDSyncPlugin plugin;
+    private final DataSyncPlugin plugin;
 
     private final Function<String, String> statementProcessor;
     private final ConnectionFactory connectionFactory;
 
-    public SqlStorage(PDSyncPlugin plugin, ConnectionFactory connectionFactory, String tablePrefix) {
+    public SqlStorage(DataSyncPlugin plugin, ConnectionFactory connectionFactory, String tablePrefix) {
         this.plugin = plugin;
         this.connectionFactory = connectionFactory;
         this.statementProcessor = connectionFactory.getStatementProcessor().compose(s -> s.replace("{prefix}", tablePrefix));
     }
 
     @Override
-    public PDSyncPlugin getPlugin() {
+    public DataSyncPlugin getPlugin() {
         return this.plugin;
     }
 
@@ -67,9 +65,7 @@ public class SqlStorage implements StorageImplementation {
     }
 
     @Override
-    @Nullable
-    public Optional<PlayerData> loadPlayerData(UUID uniqueId, String username) throws Exception {
-        PlayerData playerData = PlayerDataFactory.create(uniqueId, username);
+    public Optional<String> loadPlayerData(UUID uniqueId, String username) throws Exception {
         try (Connection c = this.connectionFactory.getConnection()) {
             try (PreparedStatement ps = c.prepareStatement(this.statementProcessor.apply(GET_PLAYER_DATA))) {
                 ps.setString(1, uniqueId.toString());
@@ -78,12 +74,10 @@ public class SqlStorage implements StorageImplementation {
                         return Optional.empty();
                     }
 
-                    PlayerDataFactory.applyFromDataBase(playerData, rs);
+                    return Optional.of(rs.getString("data"));
                 }
             }
         }
-
-        return Optional.of(playerData);
     }
 
     private void applySchema() throws IOException, SQLException {
@@ -141,50 +135,30 @@ public class SqlStorage implements StorageImplementation {
         }
     }
 
-    public void savePlayerData(PlayerData data) throws SQLException {
+    @Override
+    public void savePlayerData(DataSyncPlayer player) throws SQLException {
         try (Connection c = this.connectionFactory.getConnection()) {
             try (PreparedStatement ps = c.prepareStatement(this.statementProcessor.apply(GET_USERNAME))) {
-                ps.setString(1, data.uuid().toString());
+                ps.setString(1, player.getPlayerId().toString());
                 try (ResultSet rs = ps.executeQuery()) {
-                    savePlayerData(c, data, !rs.next() ? INSERT_PLAYER_DATA : UPDATE_PLAYER_DATA);
+                    savePlayerData(c, player, !rs.next() ? INSERT_PLAYER_DATA : UPDATE_PLAYER_DATA);
                 }
             }
         }
     }
 
-    private void savePlayerData(Connection c, PlayerData data, String query) throws SQLException {
+    private void savePlayerData(Connection c, DataSyncPlayer player, String query) throws SQLException {
         try (PreparedStatement ps = c.prepareStatement(this.statementProcessor.apply(query))) {
-            ps.setString(1, data.uuid().toString());
-            ps.setString(2, data.username());
-            ps.setDouble(3, data.health().getHealth());
-            ps.setFloat(4, data.health().getFoodLevel());
-            ps.setInt(5, data.xp().getLevel());
-            ps.setDouble(6, data.xp().getProgress());
-            ps.setString(7, data.gameMode().toString());
-
-            ps.setString(8, data.potionEffects());
-
-            ps.setString(9, data.savedInventory());
-            ps.setString(10, data.enderChest());
-            ps.setInt(11, data.heldItemSlot());
-            ps.setBoolean(12, data.isFlight());
+            ps.setString(1, player.getPlayerId().toString());
+            ps.setString(2, player.getUsername());
+            ps.setString(3, player.getData());
 
             if (query.equals(UPDATE_PLAYER_DATA)) {
-                ps.setString(13, data.uuid().toString());
+                ps.setString(13, player.getPlayerId().toString());
             }
 
             ps.execute();
         }
-    }
-
-    @Override
-    public UUID getPlayerUniqueId(String username) throws SQLException {
-        return null;
-    }
-
-    @Override
-    public String getPlayerName(UUID uniqueId) throws SQLException {
-        return null;
     }
 
     private static boolean tableExists(Connection connection, String table) throws SQLException {

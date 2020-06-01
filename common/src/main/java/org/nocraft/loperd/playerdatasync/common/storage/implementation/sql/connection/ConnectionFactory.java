@@ -1,6 +1,6 @@
 package org.nocraft.loperd.playerdatasync.common.storage.implementation.sql.connection;
 
-import org.nocraft.loperd.playerdatasync.common.plugin.PDSyncPlugin;
+import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -12,7 +12,7 @@ public interface ConnectionFactory {
 
     String getImplementationName();
 
-    void init(PDSyncPlugin plugin);
+    void init(DataSyncPlugin plugin);
 
     void shutdown() throws Exception;
 
