@@ -125,6 +125,10 @@ public class PlayerEnterListener extends DataSyncListenerBukkit {
                 UUID uniqueId = UUID.fromString(parts.get(0));
                 PlayerData data = BukkitSerializer.fromByteArray(parts.get(1));
 
+                if (this.queue.containsKey(uniqueId)) {
+                    this.queue.remove(uniqueId).stopTimeout();
+                }
+
                 if (!this.plugin.getBootstrap().getPlayer(uniqueId).isPresent()) {
                     QueuedPlayer queuedPlayer = new QueuedPlayer(uniqueId);
                     queuedPlayer.changePlayerData(data);

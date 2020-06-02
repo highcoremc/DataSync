@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.nocraft.loperd</groupId>
         <artifactId>playerdatasync</artifactId>
-        <version>0.1-SNAPSHOT</version>
+        <version>0.1.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -15,7 +15,7 @@
 
     <build>
         <directory>../target</directory>
-        <finalName>DataSync</finalName>
+        <finalName>${project.parent.build.finalName}</finalName>
 
         <plugins>
             <plugin>

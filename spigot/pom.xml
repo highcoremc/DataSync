@@ -6,8 +6,8 @@
 
     <parent>
         <groupId>org.nocraft.loperd</groupId>
+        <version>0.1.2</version>
         <artifactId>playerdatasync</artifactId>
-        <version>0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -47,6 +47,7 @@
             <artifactId>playerdatasync.common</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper-api</artifactId>
