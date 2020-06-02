@@ -82,8 +82,8 @@ public class Storage implements StorageAdapter<DataSyncPlayer, String> {
     }
 
     @Override
-    public CompletableFuture<Optional<String>> loadPlayerData(UUID uniqueId, String username) {
-        return makeFuture(() -> this.implementation.loadPlayerData(uniqueId, username));
+    public CompletableFuture<Optional<String>> loadPlayerData(UUID uniqueId) {
+        return makeFuture(() -> this.implementation.loadPlayerData(uniqueId));
     }
 
     @Override
