@@ -36,7 +36,7 @@ public class PostgreConnectionFactory extends HikariConnectionFactory {
         String username = this.configuration.getUsername();
         String password = this.configuration.getPassword();
 
-        config.setDataSourceClassName("org.nocraft.lib.postgresql.ds.PGSimpleDataSource");
+        config.setDataSourceClassName("org.postgresql.ds.PGSimpleDataSource");
         config.addDataSourceProperty("serverName", address);
         config.addDataSourceProperty("portNumber", port);
         config.addDataSourceProperty("databaseName", database);

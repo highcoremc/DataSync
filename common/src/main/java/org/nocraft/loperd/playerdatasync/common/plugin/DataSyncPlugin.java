@@ -11,4 +11,6 @@ public interface DataSyncPlugin {
     DataSyncBootstrap getBootstrap();
 
     Configuration getConfiguration();
+
+    String getName();
 }

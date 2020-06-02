@@ -30,35 +30,6 @@ public class PlayerLoadListener extends DataSyncListenerBukkit {
         this.lockedPlayerManager = plugin.getLockedPlayerManager();
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onPlayerJoin(PlayerJoinEvent e) {
-        Player player = e.getPlayer();
-        UUID uuid = player.getUniqueId();
-        String name = player.getName();
-
-        this.playerReset(player); // used for developing
-        this.lockedPlayerManager.add(uuid);
-
-        Optional<PlayerData> result = this.plugin.getStorage().loadPlayerData(uuid, name).join();
-
-//        .thenAccept(result -> {
-            if (!result.isPresent()) {
-                this.lockedPlayerManager.remove(uuid);
-                return;
-            }
-
-            this.plugin.applyPlayerData(result.get());
-//        });
-    }
-
-    private void playerReset(Player player) {
-        player.getActivePotionEffects().clear();
-        player.getInventory().clear();
-        player.updateInventory();
-        player.setFoodLevel(20);
-        player.setHealth(20D);
-    }
-
     @EventHandler
     public void onPlayerLoaded(PlayerLoadedEvent e) {
         Player p = e.getPlayer();
@@ -70,15 +41,5 @@ public class PlayerLoadListener extends DataSyncListenerBukkit {
                         p.getName(),
                         p.getUniqueId())
         );
-    }
-
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent e) {
-        Player player = e.getPlayer();
-        UUID uniqueId = player.getUniqueId();
-
-        this.plugin.getStorage().savePlayerData(player).thenAccept(ignored -> {
-            this.lockedPlayerManager.remove(uniqueId);
-        });
     }
 }
