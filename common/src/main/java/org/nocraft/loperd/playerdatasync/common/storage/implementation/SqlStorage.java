@@ -65,7 +65,7 @@ public class SqlStorage implements StorageImplementation {
     }
 
     @Override
-    public Optional<String> loadPlayerData(UUID uniqueId, String username) throws Exception {
+    public Optional<String> loadPlayerData(UUID uniqueId) throws Exception {
         try (Connection c = this.connectionFactory.getConnection()) {
             try (PreparedStatement ps = c.prepareStatement(this.statementProcessor.apply(GET_PLAYER_DATA))) {
                 ps.setString(1, uniqueId.toString());

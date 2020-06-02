@@ -42,7 +42,7 @@ public class NoSqlStorage implements StorageImplementation {
     }
 
     @Override
-    public Optional<String> loadPlayerData(UUID uniqueId, String username) {
+    public Optional<String> loadPlayerData(UUID uniqueId) {
         try (StatefulRedisConnection<String, String> conn = this.connectionFactory.getConnection()) {
             String result = conn.sync().hget(STORAGE_KEY, uniqueId.toString());
 
@@ -57,14 +57,7 @@ public class NoSqlStorage implements StorageImplementation {
     @Override
     public void savePlayerData(DataSyncPlayer player) {
         try (StatefulRedisConnection<String, String> conn = this.connectionFactory.getConnection()) {
-            boolean result = conn.sync().hset(STORAGE_KEY, player.getPlayerId().toString(), player.getData());
-            if (result) {
-//                call SuccessfulSavedEvent
-                return;
-            } else {
-                // call FailureSaveEvent
-                return;
-            }
+            conn.sync().hset(STORAGE_KEY, player.getPlayerId().toString(), player.getData());
         }
     }
 

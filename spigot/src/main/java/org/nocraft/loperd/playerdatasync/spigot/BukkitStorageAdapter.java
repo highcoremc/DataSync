@@ -22,8 +22,8 @@ public class BukkitStorageAdapter implements StorageAdapter<Player, PlayerData> 
     }
 
     @Override
-    public CompletableFuture<Optional<PlayerData>> loadPlayerData(UUID uniqueId, String username) {
-        return this.storage.loadPlayerData(uniqueId, username).thenApply(data -> {
+    public CompletableFuture<Optional<PlayerData>> loadPlayerData(UUID uniqueId) {
+        return this.storage.loadPlayerData(uniqueId).thenApply(data -> {
             if (!data.isPresent()) {
                 return Optional.empty();
             }
