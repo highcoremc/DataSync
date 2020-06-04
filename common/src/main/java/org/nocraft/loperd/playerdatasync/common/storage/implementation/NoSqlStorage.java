@@ -1,9 +1,9 @@
-package org.nocraft.loperd.playerdatasync.common.storage.implementation;
+package org.nocraft.loperd.datasync.common.storage.implementation;
 
 import com.lambdaworks.redis.api.StatefulRedisConnection;
-import org.nocraft.loperd.playerdatasync.common.DataSyncPlayer;
-import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
-import org.nocraft.loperd.playerdatasync.common.storage.implementation.nosql.RedisConnectionFactory;
+import org.nocraft.loperd.datasync.common.DataSyncPlayer;
+import org.nocraft.loperd.datasync.common.plugin.DataSyncPlugin;
+import org.nocraft.loperd.datasync.common.storage.implementation.nosql.RedisConnectionFactory;
 
 import java.util.Optional;
 import java.util.UUID;

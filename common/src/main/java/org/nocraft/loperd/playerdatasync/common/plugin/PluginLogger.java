@@ -1,4 +1,4 @@
-package org.nocraft.loperd.playerdatasync.common.plugin;
+package org.nocraft.loperd.datasync.common.plugin;
 
 public interface PluginLogger {
 

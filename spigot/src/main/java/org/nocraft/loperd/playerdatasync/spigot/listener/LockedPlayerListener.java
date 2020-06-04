@@ -1,4 +1,4 @@
-package org.nocraft.loperd.playerdatasync.spigot.listener;
+package org.nocraft.loperd.datasync.spigot.listener;
 
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -10,8 +10,8 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.nocraft.loperd.playerdatasync.spigot.DataSyncPluginBukkit;
-import org.nocraft.loperd.playerdatasync.spigot.manager.LockedPlayerManager;
+import org.nocraft.loperd.datasync.spigot.DataSyncPluginBukkit;
+import org.nocraft.loperd.datasync.spigot.manager.LockedPlayerManager;
 
 public class LockedPlayerListener extends DataSyncListenerBukkit {
 

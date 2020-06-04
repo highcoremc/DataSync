@@ -1,4 +1,4 @@
-package org.nocraft.loperd.playerdatasync.spigot.serialization;
+package org.nocraft.loperd.datasync.spigot.serialization;
 
 public class VersionMismatchException extends Exception {
     private final int receivedVersion;

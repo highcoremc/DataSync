@@ -1,4 +1,4 @@
-package org.nocraft.loperd.playerdatasync.common.storage.implementation.sql;
+package org.nocraft.loperd.datasync.common.storage.implementation.sql;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,6 +1,6 @@
-package org.nocraft.loperd.playerdatasync.common.config;
+package org.nocraft.loperd.datasync.common.config;
 
-import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
+import org.nocraft.loperd.datasync.common.plugin.DataSyncPlugin;
 
 /**
  * The master configuration.

@@ -1,4 +1,4 @@
-package org.nocraft.loperd.playerdatasync.common.storage;
+package org.nocraft.loperd.datasync.common.storage;
 
 import java.util.Optional;
 import java.util.UUID;

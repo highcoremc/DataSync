@@ -1,9 +1,9 @@
-package org.nocraft.loperd.playerdatasync.spigot;
+package org.nocraft.loperd.datasync.spigot;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.nocraft.loperd.playerdatasync.common.config.Adapter.ConfigurationAdapter;
-import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
+import org.nocraft.loperd.datasync.common.config.Adapter.ConfigurationAdapter;
+import org.nocraft.loperd.datasync.common.plugin.DataSyncPlugin;
 
 import java.io.File;
 import java.util.*;

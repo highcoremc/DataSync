@@ -1,12 +1,12 @@
-package org.nocraft.loperd.playerdatasync.common.storage.implementation.sql.connection.hikari;
+package org.nocraft.loperd.datasync.common.storage.implementation.sql.connection.hikari;
 
 import com.google.common.collect.ImmutableList;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
-import org.nocraft.loperd.playerdatasync.common.plugin.PluginLogger;
-import org.nocraft.loperd.playerdatasync.common.storage.implementation.sql.connection.ConnectionFactory;
-import org.nocraft.loperd.playerdatasync.common.storage.misc.StorageCredentials;
+import org.nocraft.loperd.datasync.common.plugin.DataSyncPlugin;
+import org.nocraft.loperd.datasync.common.plugin.PluginLogger;
+import org.nocraft.loperd.datasync.common.storage.implementation.sql.connection.ConnectionFactory;
+import org.nocraft.loperd.datasync.common.storage.misc.StorageCredentials;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -141,7 +141,7 @@ public abstract class HikariConnectionFactory implements ConnectionFactory {
 
         PluginLogger logger = plugin.getLogger();
         logger.warn("A " + linkageError.getClass().getSimpleName() + " has occurred whilst initialising Hikari. This is likely due to classloading conflicts between other plugins.");
-        logger.warn("Please check for other plugins below (and try loading org.nocraft.loperd.playerdatasync.common without them installed) before reporting the issue.");
+        logger.warn("Please check for other plugins below (and try loading org.nocraft.loperd.datasync.common without them installed) before reporting the issue.");
 
         for (String className : noteworthyClasses) {
             Class<?> clazz;

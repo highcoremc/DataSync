@@ -1,7 +1,7 @@
-package org.nocraft.loperd.playerdatasync.common.config;
+package org.nocraft.loperd.datasync.common.config;
 
 import com.google.common.collect.ImmutableMap;
-import org.nocraft.loperd.playerdatasync.common.config.Adapter.ConfigurationAdapter;
+import org.nocraft.loperd.datasync.common.config.Adapter.ConfigurationAdapter;
 
 import java.util.Map;
 import java.util.function.Function;

@@ -1,6 +1,6 @@
-package org.nocraft.loperd.playerdatasync.common.config.Adapter;
+package org.nocraft.loperd.datasync.common.config.Adapter;
 
-import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
+import org.nocraft.loperd.datasync.common.plugin.DataSyncPlugin;
 
 import java.util.List;
 import java.util.Map;

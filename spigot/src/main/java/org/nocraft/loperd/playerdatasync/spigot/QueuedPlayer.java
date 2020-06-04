@@ -1,8 +1,8 @@
-package org.nocraft.loperd.playerdatasync.spigot;
+package org.nocraft.loperd.datasync.spigot;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.nocraft.loperd.playerdatasync.common.scheduler.SchedulerTask;
+import org.nocraft.loperd.datasync.common.scheduler.SchedulerTask;
 
 import java.util.Optional;
 import java.util.UUID;

@@ -1,6 +1,6 @@
-package org.nocraft.loperd.playerdatasync.common.storage.implementation.sql.connection;
+package org.nocraft.loperd.datasync.common.storage.implementation.sql.connection;
 
-import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
+import org.nocraft.loperd.datasync.common.plugin.DataSyncPlugin;
 
 import java.sql.Connection;
 import java.sql.SQLException;

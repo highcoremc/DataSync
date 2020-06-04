@@ -1,4 +1,4 @@
-package org.nocraft.loperd.playerdatasync.spigot.listener;
+package org.nocraft.loperd.datasync.spigot.listener;
 
 import com.gmail.tracebachi.DeltaRedis.Spigot.Events.DeltaRedisMessageEvent;
 import org.bukkit.ChatColor;
@@ -8,13 +8,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.nocraft.loperd.playerdatasync.spigot.DataSyncChannels;
-import org.nocraft.loperd.playerdatasync.spigot.DataSyncPluginBukkit;
-import org.nocraft.loperd.playerdatasync.spigot.PlayerData;
-import org.nocraft.loperd.playerdatasync.spigot.QueuedPlayer;
-import org.nocraft.loperd.playerdatasync.spigot.manager.LockedPlayerManager;
-import org.nocraft.loperd.playerdatasync.spigot.serialization.BukkitSerializer;
-import org.nocraft.loperd.playerdatasync.spigot.serialization.VersionMismatchException;
+import org.nocraft.loperd.datasync.spigot.DataSyncChannels;
+import org.nocraft.loperd.datasync.spigot.DataSyncPluginBukkit;
+import org.nocraft.loperd.datasync.spigot.PlayerData;
+import org.nocraft.loperd.datasync.spigot.QueuedPlayer;
+import org.nocraft.loperd.datasync.spigot.manager.LockedPlayerManager;
+import org.nocraft.loperd.datasync.spigot.serialization.BukkitSerializer;
+import org.nocraft.loperd.datasync.spigot.serialization.VersionMismatchException;
 
 import java.io.IOException;
 import java.util.*;

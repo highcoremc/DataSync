@@ -1,8 +1,8 @@
-package org.nocraft.loperd.playerdatasync.spigot.manager;
+package org.nocraft.loperd.datasync.spigot.manager;
 
-import org.nocraft.loperd.playerdatasync.common.Shutdownable;
-import org.nocraft.loperd.playerdatasync.common.scheduler.SchedulerTask;
-import org.nocraft.loperd.playerdatasync.spigot.DataSyncPluginBukkit;
+import org.nocraft.loperd.datasync.common.Shutdownable;
+import org.nocraft.loperd.datasync.common.scheduler.SchedulerTask;
+import org.nocraft.loperd.datasync.spigot.DataSyncPluginBukkit;
 
 import java.util.HashMap;
 import java.util.Map;

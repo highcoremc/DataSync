@@ -1,4 +1,4 @@
-package org.nocraft.loperd.playerdatasync.common.storage.misc;
+package org.nocraft.loperd.datasync.common.storage.misc;
 
 import java.util.Map;
 import java.util.Objects;

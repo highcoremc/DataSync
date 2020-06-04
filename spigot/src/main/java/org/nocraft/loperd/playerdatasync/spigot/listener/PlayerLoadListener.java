@@ -1,20 +1,20 @@
-package org.nocraft.loperd.playerdatasync.spigot.listener;
+package org.nocraft.loperd.datasync.spigot.listener;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.nocraft.loperd.playerdatasync.common.DataSyncPlayer;
-import org.nocraft.loperd.playerdatasync.common.storage.Storage;
-import org.nocraft.loperd.playerdatasync.common.storage.StorageAdapter;
-import org.nocraft.loperd.playerdatasync.spigot.BukkitStorageAdapter;
-import org.nocraft.loperd.playerdatasync.spigot.DataSyncPluginBukkit;
-import org.nocraft.loperd.playerdatasync.spigot.PlayerData;
-import org.nocraft.loperd.playerdatasync.spigot.PlayerDataApply;
-import org.nocraft.loperd.playerdatasync.spigot.event.PlayerLoadedEvent;
-import org.nocraft.loperd.playerdatasync.spigot.manager.LockedPlayerManager;
-import org.nocraft.loperd.playerdatasync.spigot.serialization.BukkitSerializer;
+import org.nocraft.loperd.datasync.common.DataSyncPlayer;
+import org.nocraft.loperd.datasync.common.storage.Storage;
+import org.nocraft.loperd.datasync.common.storage.StorageAdapter;
+import org.nocraft.loperd.datasync.spigot.BukkitStorageAdapter;
+import org.nocraft.loperd.datasync.spigot.DataSyncPluginBukkit;
+import org.nocraft.loperd.datasync.spigot.PlayerData;
+import org.nocraft.loperd.datasync.spigot.PlayerDataApply;
+import org.nocraft.loperd.datasync.spigot.event.PlayerLoadedEvent;
+import org.nocraft.loperd.datasync.spigot.manager.LockedPlayerManager;
+import org.nocraft.loperd.datasync.spigot.serialization.BukkitSerializer;
 
 import java.util.Optional;
 import java.util.UUID;

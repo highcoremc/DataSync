@@ -4,12 +4,12 @@
 
     <parent>
         <groupId>org.nocraft.loperd</groupId>
-        <artifactId>playerdatasync</artifactId>
+        <artifactId>datasync</artifactId>
         <version>0.1.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>playerdatasync.common</artifactId>
+    <artifactId>datasync.common</artifactId>
     <packaging>jar</packaging>
 
     <name>DataSyncCommon</name>

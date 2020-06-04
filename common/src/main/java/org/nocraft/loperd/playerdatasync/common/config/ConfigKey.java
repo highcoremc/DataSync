@@ -1,6 +1,6 @@
-package org.nocraft.loperd.playerdatasync.common.config;
+package org.nocraft.loperd.datasync.common.config;
 
-import org.nocraft.loperd.playerdatasync.common.config.Adapter.ConfigurationAdapter;
+import org.nocraft.loperd.datasync.common.config.Adapter.ConfigurationAdapter;
 
 /**
  * Represents a key in the configuration.

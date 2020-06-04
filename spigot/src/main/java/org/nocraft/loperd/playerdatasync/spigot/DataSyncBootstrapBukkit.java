@@ -1,14 +1,14 @@
-package org.nocraft.loperd.playerdatasync.spigot;
+package org.nocraft.loperd.datasync.spigot;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
-import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncBootstrap;
-import org.nocraft.loperd.playerdatasync.common.plugin.PluginLogger;
-import org.nocraft.loperd.playerdatasync.common.plugin.logging.JavaPluginLogger;
-import org.nocraft.loperd.playerdatasync.common.scheduler.SchedulerAdapter;
-import org.nocraft.loperd.playerdatasync.spigot.listener.DataSyncListenerBukkit;
+import org.nocraft.loperd.datasync.common.plugin.DataSyncBootstrap;
+import org.nocraft.loperd.datasync.common.plugin.PluginLogger;
+import org.nocraft.loperd.datasync.common.plugin.logging.JavaPluginLogger;
+import org.nocraft.loperd.datasync.common.scheduler.SchedulerAdapter;
+import org.nocraft.loperd.datasync.spigot.listener.DataSyncListenerBukkit;
 
 import java.io.InputStream;
 import java.nio.file.Path;

@@ -1,9 +1,9 @@
-package org.nocraft.loperd.playerdatasync.common.storage;
+package org.nocraft.loperd.datasync.common.storage;
 
-import org.nocraft.loperd.playerdatasync.common.DataSyncPlayer;
-import org.nocraft.loperd.playerdatasync.common.Throwing;
-import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
-import org.nocraft.loperd.playerdatasync.common.storage.implementation.StorageImplementation;
+import org.nocraft.loperd.datasync.common.DataSyncPlayer;
+import org.nocraft.loperd.datasync.common.Throwing;
+import org.nocraft.loperd.datasync.common.plugin.DataSyncPlugin;
+import org.nocraft.loperd.datasync.common.storage.implementation.StorageImplementation;
 
 import java.util.Collection;
 import java.util.Collections;

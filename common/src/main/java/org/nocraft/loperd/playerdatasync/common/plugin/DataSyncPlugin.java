@@ -1,7 +1,7 @@
-package org.nocraft.loperd.playerdatasync.common.plugin;
+package org.nocraft.loperd.datasync.common.plugin;
 
-import org.nocraft.loperd.playerdatasync.common.config.Configuration;
-import org.nocraft.loperd.playerdatasync.common.scheduler.SchedulerAdapter;
+import org.nocraft.loperd.datasync.common.config.Configuration;
+import org.nocraft.loperd.datasync.common.scheduler.SchedulerAdapter;
 
 public interface DataSyncPlugin {
     PluginLogger getLogger();

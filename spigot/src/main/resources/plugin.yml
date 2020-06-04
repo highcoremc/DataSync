@@ -1,6 +1,6 @@
 name: DataSync
 version: ${project.version}
-main: org.nocraft.loperd.playerdatasync.spigot.DataSyncBootstrapBukkit
+main: org.nocraft.loperd.datasync.spigot.DataSyncBootstrapBukkit
 api-version: 1.13
 authors: [loperd]
 depend: [DeltaRedis]

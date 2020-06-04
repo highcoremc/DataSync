@@ -1,11 +1,11 @@
-package org.nocraft.loperd.playerdatasync.common.storage.implementation.nosql;
+package org.nocraft.loperd.datasync.common.storage.implementation.nosql;
 
 import com.lambdaworks.redis.RedisClient;
 import com.lambdaworks.redis.RedisURI;
 import com.lambdaworks.redis.api.StatefulRedisConnection;
 import com.lambdaworks.redis.codec.StringCodec;
-import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
-import org.nocraft.loperd.playerdatasync.common.storage.misc.StorageCredentials;
+import org.nocraft.loperd.datasync.common.plugin.DataSyncPlugin;
+import org.nocraft.loperd.datasync.common.storage.misc.StorageCredentials;
 
 public class RedisConnectionFactory implements ConnectionFactory<String> {
 

@@ -1,4 +1,4 @@
-package org.nocraft.loperd.playerdatasync.spigot.event;
+package org.nocraft.loperd.datasync.spigot.event;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

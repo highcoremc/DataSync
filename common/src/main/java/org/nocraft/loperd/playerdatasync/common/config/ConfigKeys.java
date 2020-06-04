@@ -1,14 +1,14 @@
-package org.nocraft.loperd.playerdatasync.common.config;
+package org.nocraft.loperd.datasync.common.config;
 
 import com.google.common.collect.ImmutableMap;
-import org.nocraft.loperd.playerdatasync.common.ImmutableCollectors;
-import org.nocraft.loperd.playerdatasync.common.storage.misc.StorageCredentials;
-import org.nocraft.loperd.playerdatasync.common.storage.StorageType;
+import org.nocraft.loperd.datasync.common.ImmutableCollectors;
+import org.nocraft.loperd.datasync.common.storage.misc.StorageCredentials;
+import org.nocraft.loperd.datasync.common.storage.StorageType;
 
 import java.lang.reflect.Modifier;
 import java.util.*;
 
-import static org.nocraft.loperd.playerdatasync.common.config.ConfigKeyTypes.*;
+import static org.nocraft.loperd.datasync.common.config.ConfigKeyTypes.*;
 
 /**
  * All of the {@link ConfigKey}s.

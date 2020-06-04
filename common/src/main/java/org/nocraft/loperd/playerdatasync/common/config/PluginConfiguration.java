@@ -1,7 +1,7 @@
-package org.nocraft.loperd.playerdatasync.common.config;
+package org.nocraft.loperd.datasync.common.config;
 
-import org.nocraft.loperd.playerdatasync.common.config.Adapter.ConfigurationAdapter;
-import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
+import org.nocraft.loperd.datasync.common.config.Adapter.ConfigurationAdapter;
+import org.nocraft.loperd.datasync.common.plugin.DataSyncPlugin;
 
 /**
  * An abstract implementation of {@link Configuration}.

@@ -1,12 +1,12 @@
-package org.nocraft.loperd.playerdatasync.spigot;
+package org.nocraft.loperd.datasync.spigot;
 
 import org.bukkit.entity.Player;
-import org.nocraft.loperd.playerdatasync.common.DataSyncPlayer;
-import org.nocraft.loperd.playerdatasync.common.storage.Storage;
-import org.nocraft.loperd.playerdatasync.common.storage.StorageAdapter;
-import org.nocraft.loperd.playerdatasync.common.storage.StorageFactory;
-import org.nocraft.loperd.playerdatasync.spigot.serialization.BukkitSerializer;
-import org.nocraft.loperd.playerdatasync.spigot.serialization.VersionMismatchException;
+import org.nocraft.loperd.datasync.common.DataSyncPlayer;
+import org.nocraft.loperd.datasync.common.storage.Storage;
+import org.nocraft.loperd.datasync.common.storage.StorageAdapter;
+import org.nocraft.loperd.datasync.common.storage.StorageFactory;
+import org.nocraft.loperd.datasync.spigot.serialization.BukkitSerializer;
+import org.nocraft.loperd.datasync.spigot.serialization.VersionMismatchException;
 
 import java.io.IOException;
 import java.util.Optional;

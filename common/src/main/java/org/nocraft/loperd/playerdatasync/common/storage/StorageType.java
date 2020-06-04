@@ -1,4 +1,4 @@
-package org.nocraft.loperd.playerdatasync.common.storage;
+package org.nocraft.loperd.datasync.common.storage;
 
 import com.google.common.collect.ImmutableList;
 

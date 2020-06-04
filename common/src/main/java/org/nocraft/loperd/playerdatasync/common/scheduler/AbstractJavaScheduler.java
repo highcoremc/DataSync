@@ -1,4 +1,4 @@
-package org.nocraft.loperd.playerdatasync.common.scheduler;
+package org.nocraft.loperd.datasync.common.scheduler;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.NonNull;

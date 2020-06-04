@@ -1,9 +1,9 @@
-package org.nocraft.loperd.playerdatasync.common.storage.implementation;
+package org.nocraft.loperd.datasync.common.storage.implementation;
 
-import org.nocraft.loperd.playerdatasync.common.DataSyncPlayer;
-import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
-import org.nocraft.loperd.playerdatasync.common.storage.implementation.sql.SchemaReader;
-import org.nocraft.loperd.playerdatasync.common.storage.implementation.sql.connection.ConnectionFactory;
+import org.nocraft.loperd.datasync.common.DataSyncPlayer;
+import org.nocraft.loperd.datasync.common.plugin.DataSyncPlugin;
+import org.nocraft.loperd.datasync.common.storage.implementation.sql.SchemaReader;
+import org.nocraft.loperd.datasync.common.storage.implementation.sql.connection.ConnectionFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -83,7 +83,7 @@ public class SqlStorage implements StorageImplementation {
     private void applySchema() throws IOException, SQLException {
         List<String> statements;
 
-        String schemaFileName = "org/nocraft/loperd/playerdatasync/" + this.connectionFactory.getImplementationName().toLowerCase() + ".sql";
+        String schemaFileName = "org/nocraft/loperd/datasync/" + this.connectionFactory.getImplementationName().toLowerCase() + ".sql";
         try (InputStream is = this.plugin.getBootstrap().getResourceStream(schemaFileName)) {
             if (is == null) {
                 throw new IOException("Couldn't locate schema file for " + this.connectionFactory.getImplementationName());

@@ -1,4 +1,4 @@
-package org.nocraft.loperd.playerdatasync.common;
+package org.nocraft.loperd.datasync.common;
 
 public interface Registerable {
 

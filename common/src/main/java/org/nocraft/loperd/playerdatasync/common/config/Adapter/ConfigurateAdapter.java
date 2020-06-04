@@ -1,9 +1,9 @@
-package org.nocraft.loperd.playerdatasync.common.config.Adapter;
+package org.nocraft.loperd.datasync.common.config.Adapter;
 
 import com.google.common.base.Splitter;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
-import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
+import org.nocraft.loperd.datasync.common.plugin.DataSyncPlugin;
 
 import java.io.IOException;
 import java.nio.file.Path;

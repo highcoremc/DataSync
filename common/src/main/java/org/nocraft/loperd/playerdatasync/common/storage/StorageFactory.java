@@ -1,14 +1,14 @@
-package org.nocraft.loperd.playerdatasync.common.storage;
+package org.nocraft.loperd.datasync.common.storage;
 
-import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
-import org.nocraft.loperd.playerdatasync.common.config.ConfigKeys;
-import org.nocraft.loperd.playerdatasync.common.storage.implementation.NoSqlStorage;
-import org.nocraft.loperd.playerdatasync.common.storage.implementation.SqlStorage;
-import org.nocraft.loperd.playerdatasync.common.storage.implementation.StorageImplementation;
-import org.nocraft.loperd.playerdatasync.common.storage.implementation.nosql.RedisConnectionFactory;
-import org.nocraft.loperd.playerdatasync.common.storage.implementation.sql.connection.hikari.MariaDbConnectionFactory;
-import org.nocraft.loperd.playerdatasync.common.storage.implementation.sql.connection.hikari.MySqlConnectionFactory;
-import org.nocraft.loperd.playerdatasync.common.storage.implementation.sql.connection.hikari.PostgreConnectionFactory;
+import org.nocraft.loperd.datasync.common.plugin.DataSyncPlugin;
+import org.nocraft.loperd.datasync.common.config.ConfigKeys;
+import org.nocraft.loperd.datasync.common.storage.implementation.NoSqlStorage;
+import org.nocraft.loperd.datasync.common.storage.implementation.SqlStorage;
+import org.nocraft.loperd.datasync.common.storage.implementation.StorageImplementation;
+import org.nocraft.loperd.datasync.common.storage.implementation.nosql.RedisConnectionFactory;
+import org.nocraft.loperd.datasync.common.storage.implementation.sql.connection.hikari.MariaDbConnectionFactory;
+import org.nocraft.loperd.datasync.common.storage.implementation.sql.connection.hikari.MySqlConnectionFactory;
+import org.nocraft.loperd.datasync.common.storage.implementation.sql.connection.hikari.PostgreConnectionFactory;
 
 public class StorageFactory {
 

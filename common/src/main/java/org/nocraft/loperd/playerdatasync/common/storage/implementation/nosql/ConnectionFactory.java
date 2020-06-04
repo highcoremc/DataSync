@@ -1,7 +1,7 @@
-package org.nocraft.loperd.playerdatasync.common.storage.implementation.nosql;
+package org.nocraft.loperd.datasync.common.storage.implementation.nosql;
 
 import com.lambdaworks.redis.api.StatefulRedisConnection;
-import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
+import org.nocraft.loperd.datasync.common.plugin.DataSyncPlugin;
 
 public interface ConnectionFactory <DT> {
     String getImplementationName();

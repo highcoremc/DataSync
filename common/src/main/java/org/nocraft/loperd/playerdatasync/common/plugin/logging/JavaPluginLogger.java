@@ -1,6 +1,6 @@
-package org.nocraft.loperd.playerdatasync.common.plugin.logging;
+package org.nocraft.loperd.datasync.common.plugin.logging;
 
-import org.nocraft.loperd.playerdatasync.common.plugin.PluginLogger;
+import org.nocraft.loperd.datasync.common.plugin.PluginLogger;
 
 import java.util.logging.Logger;
 

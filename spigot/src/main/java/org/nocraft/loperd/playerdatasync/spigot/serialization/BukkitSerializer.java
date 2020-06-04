@@ -1,8 +1,8 @@
-package org.nocraft.loperd.playerdatasync.spigot.serialization;
+package org.nocraft.loperd.datasync.spigot.serialization;
 
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
-import org.nocraft.loperd.playerdatasync.spigot.PlayerData;
+import org.nocraft.loperd.datasync.spigot.PlayerData;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 import java.io.*;

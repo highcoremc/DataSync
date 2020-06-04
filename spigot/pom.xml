@@ -7,12 +7,12 @@
     <parent>
         <groupId>org.nocraft.loperd</groupId>
         <version>0.1.2</version>
-        <artifactId>playerdatasync</artifactId>
+        <artifactId>datasync</artifactId>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <!--This have to be in lowercase because it's used by plugin.yml-->
-    <artifactId>playerdatasync.spigot</artifactId>
+    <artifactId>datasync.spigot</artifactId>
     <packaging>jar</packaging>
 
     <name>DataSyncSpigot</name>
@@ -44,7 +44,7 @@
         <!--Common plugin component-->
         <dependency>
             <groupId>org.nocraft.loperd</groupId>
-            <artifactId>playerdatasync.common</artifactId>
+            <artifactId>datasync.common</artifactId>
             <version>${project.version}</version>
         </dependency>
 

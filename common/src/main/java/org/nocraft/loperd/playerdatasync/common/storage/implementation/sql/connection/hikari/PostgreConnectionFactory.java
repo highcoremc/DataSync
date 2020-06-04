@@ -1,7 +1,7 @@
-package org.nocraft.loperd.playerdatasync.common.storage.implementation.sql.connection.hikari;
+package org.nocraft.loperd.datasync.common.storage.implementation.sql.connection.hikari;
 
 import com.zaxxer.hikari.HikariConfig;
-import org.nocraft.loperd.playerdatasync.common.storage.misc.StorageCredentials;
+import org.nocraft.loperd.datasync.common.storage.misc.StorageCredentials;
 
 import java.util.Map;
 import java.util.function.Function;

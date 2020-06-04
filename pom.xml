@@ -4,7 +4,7 @@
 
     <groupId>org.nocraft.loperd</groupId>
     <!--This have to be in lowercase because it's used by plugin.yml-->
-    <artifactId>playerdatasync</artifactId>
+    <artifactId>datasync</artifactId>
     <packaging>pom</packaging>
 
     <name>DataSync</name>

@@ -1,8 +1,8 @@
-package org.nocraft.loperd.playerdatasync.common.storage.implementation;
+package org.nocraft.loperd.datasync.common.storage.implementation;
 
-import org.nocraft.loperd.playerdatasync.common.DataSyncPlayer;
-import org.nocraft.loperd.playerdatasync.common.Shutdownable;
-import org.nocraft.loperd.playerdatasync.common.plugin.DataSyncPlugin;
+import org.nocraft.loperd.datasync.common.DataSyncPlayer;
+import org.nocraft.loperd.datasync.common.Shutdownable;
+import org.nocraft.loperd.datasync.common.plugin.DataSyncPlugin;
 
 import java.util.Optional;
 import java.util.UUID;

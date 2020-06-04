@@ -1,7 +1,7 @@
-package org.nocraft.loperd.playerdatasync.common.plugin;
+package org.nocraft.loperd.datasync.common.plugin;
 
 import org.jetbrains.annotations.Nullable;
-import org.nocraft.loperd.playerdatasync.common.scheduler.SchedulerAdapter;
+import org.nocraft.loperd.datasync.common.scheduler.SchedulerAdapter;
 
 import java.io.InputStream;
 import java.nio.file.Path;
