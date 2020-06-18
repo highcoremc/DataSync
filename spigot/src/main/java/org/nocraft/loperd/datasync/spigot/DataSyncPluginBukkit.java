@@ -2,11 +2,8 @@ package org.nocraft.loperd.datasync.spigot;
 
 import com.gmail.tracebachi.DeltaRedis.Spigot.DeltaRedisApi;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.nocraft.loperd.datasync.common.Composer;
 import org.nocraft.loperd.datasync.common.config.Adapter.ConfigurationAdapter;
@@ -17,17 +14,16 @@ import org.nocraft.loperd.datasync.common.plugin.PluginLogger;
 import org.nocraft.loperd.datasync.common.scheduler.SchedulerAdapter;
 import org.nocraft.loperd.datasync.common.storage.StorageFactory;
 import org.nocraft.loperd.datasync.spigot.event.PlayerLoadedEvent;
-import org.nocraft.loperd.datasync.spigot.listener.DataSyncListenerBukkit;
 import org.nocraft.loperd.datasync.spigot.listener.LockedPlayerListener;
 import org.nocraft.loperd.datasync.spigot.listener.PlayerEnterListener;
 import org.nocraft.loperd.datasync.spigot.listener.PlayerLoadListener;
 import org.nocraft.loperd.datasync.spigot.manager.LockedPlayerManager;
+import org.nocraft.loperd.datasync.spigot.player.PlayerData;
+import org.nocraft.loperd.datasync.spigot.player.PlayerDataApply;
 
 import java.io.File;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class DataSyncPluginBukkit implements DataSyncPlugin {
 

@@ -5,6 +5,7 @@ import org.nocraft.loperd.datasync.common.DataSyncPlayer;
 import org.nocraft.loperd.datasync.common.storage.Storage;
 import org.nocraft.loperd.datasync.common.storage.StorageAdapter;
 import org.nocraft.loperd.datasync.common.storage.StorageFactory;
+import org.nocraft.loperd.datasync.spigot.player.PlayerData;
 import org.nocraft.loperd.datasync.spigot.serialization.BukkitSerializer;
 import org.nocraft.loperd.datasync.spigot.serialization.VersionMismatchException;
 

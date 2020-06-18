@@ -8,11 +8,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.nocraft.loperd.datasync.spigot.DataSyncChannels;
-import org.nocraft.loperd.datasync.spigot.DataSyncPluginBukkit;
-import org.nocraft.loperd.datasync.spigot.PlayerData;
-import org.nocraft.loperd.datasync.spigot.QueuedPlayer;
+import org.nocraft.loperd.datasync.spigot.*;
 import org.nocraft.loperd.datasync.spigot.manager.LockedPlayerManager;
+import org.nocraft.loperd.datasync.spigot.player.PlayerData;
+import org.nocraft.loperd.datasync.spigot.player.QueuedPlayer;
 import org.nocraft.loperd.datasync.spigot.serialization.BukkitSerializer;
 import org.nocraft.loperd.datasync.spigot.serialization.VersionMismatchException;
 

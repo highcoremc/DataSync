@@ -10,6 +10,8 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+
+import org.nocraft.loperd.datasync.spigot.DataSyncListenerBukkit;
 import org.nocraft.loperd.datasync.spigot.DataSyncPluginBukkit;
 import org.nocraft.loperd.datasync.spigot.manager.LockedPlayerManager;
 

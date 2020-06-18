@@ -1,4 +1,4 @@
-package org.nocraft.loperd.datasync.spigot;
+package org.nocraft.loperd.datasync.spigot.player;
 
 import lombok.Getter;
 import lombok.ToString;

@@ -1,4 +1,4 @@
-package org.nocraft.loperd.datasync.spigot;
+package org.nocraft.loperd.datasync.spigot.player;
 
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;

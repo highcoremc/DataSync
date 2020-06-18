@@ -8,7 +8,6 @@ import org.nocraft.loperd.datasync.common.plugin.DataSyncBootstrap;
 import org.nocraft.loperd.datasync.common.plugin.PluginLogger;
 import org.nocraft.loperd.datasync.common.plugin.logging.JavaPluginLogger;
 import org.nocraft.loperd.datasync.common.scheduler.SchedulerAdapter;
-import org.nocraft.loperd.datasync.spigot.listener.DataSyncListenerBukkit;
 
 import java.io.InputStream;
 import java.nio.file.Path;

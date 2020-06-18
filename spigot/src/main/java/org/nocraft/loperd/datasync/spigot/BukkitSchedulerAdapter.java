@@ -1,11 +1,9 @@
 package org.nocraft.loperd.datasync.spigot;
 
-import org.jetbrains.annotations.NotNull;
 import org.nocraft.loperd.datasync.common.scheduler.AbstractJavaScheduler;
 import org.nocraft.loperd.datasync.common.scheduler.SchedulerAdapter;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.TimeUnit;
 
 public class BukkitSchedulerAdapter extends AbstractJavaScheduler implements SchedulerAdapter {
 

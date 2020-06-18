@@ -1,11 +1,9 @@
-package org.nocraft.loperd.datasync.spigot.listener;
+package org.nocraft.loperd.datasync.spigot;
 
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.nocraft.loperd.datasync.common.Registerable;
 import org.nocraft.loperd.datasync.common.Shutdownable;
-import org.nocraft.loperd.datasync.spigot.DataSyncBootstrapBukkit;
-import org.nocraft.loperd.datasync.spigot.DataSyncPluginBukkit;
 
 public abstract class DataSyncListenerBukkit implements Registerable, Shutdownable, Listener {
 
