@@ -3,19 +3,16 @@ package org.nocraft.loperd.datasync.spigot.player;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
+@SuppressWarnings("deprecation")
 public class PlayerDataApply implements Runnable {
 
     private final PlayerData data;
     private final Player player;
-    private Runnable finalize;
-
-    public PlayerDataApply(Player player, PlayerData data) {
-        this.data = data;
-        this.player = player;
-    }
+    private final Runnable finalize;
 
     public PlayerDataApply(Player player, PlayerData data, Runnable finalize) {
-        this(player, data);
+        this.data = data;
+        this.player = player;
         this.finalize = finalize;
     }
 

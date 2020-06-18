@@ -45,6 +45,7 @@ public final class DataSyncBootstrapBukkit extends JavaPlugin implements DataSyn
 
     @Override
     public void onDisable() {
+        this.schedulerAdapter.shutdownScheduler();
         this.plugin.disable();
     }
 

@@ -13,6 +13,7 @@ import org.nocraft.loperd.datasync.common.plugin.DataSyncPlugin;
 import org.nocraft.loperd.datasync.common.plugin.PluginLogger;
 import org.nocraft.loperd.datasync.common.scheduler.SchedulerAdapter;
 import org.nocraft.loperd.datasync.common.storage.StorageFactory;
+import org.nocraft.loperd.datasync.spigot.event.PlayerLoadEvent;
 import org.nocraft.loperd.datasync.spigot.event.PlayerLoadedEvent;
 import org.nocraft.loperd.datasync.spigot.listener.LockedPlayerListener;
 import org.nocraft.loperd.datasync.spigot.listener.PlayerEnterListener;
@@ -20,10 +21,12 @@ import org.nocraft.loperd.datasync.spigot.listener.PlayerLoadListener;
 import org.nocraft.loperd.datasync.spigot.manager.LockedPlayerManager;
 import org.nocraft.loperd.datasync.spigot.player.PlayerData;
 import org.nocraft.loperd.datasync.spigot.player.PlayerDataApply;
+import org.nocraft.loperd.datasync.spigot.player.PlayerDataSave;
 
 import java.io.File;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class DataSyncPluginBukkit implements DataSyncPlugin {
 
@@ -62,6 +65,8 @@ public class DataSyncPluginBukkit implements DataSyncPlugin {
         this.listeners.register();
 
         this.deltaRedisApi = DeltaRedisApi.instance();
+
+        this.getScheduler().asyncRepeating(new PlayerDataSave(this), 3, TimeUnit.SECONDS);
     }
 
     public void disable() {
@@ -116,12 +121,14 @@ public class DataSyncPluginBukkit implements DataSyncPlugin {
             getLogger().info(String.format(
                     "PlayerData for player %s is not applied. Player not found on the server.", data.getPlayerId()));
             this.lockedPlayerManager.remove(data.getPlayerId());
-            // TODO: place in queue with timeout
             return;
         }
 
-        Runnable finalize = () -> getPluginManager().callEvent(new PlayerLoadedEvent(p.get()));
-        this.getScheduler().sync().execute(new PlayerDataApply(p.get(), data, finalize));
+        Player player = p.get();
+
+        getPluginManager().callEvent(new PlayerLoadEvent(player));
+        Runnable finalize = () -> getPluginManager().callEvent(new PlayerLoadedEvent(player));
+        this.getScheduler().sync().execute(new PlayerDataApply(player, data, finalize));
     }
 
     @NotNull

@@ -1,6 +1,7 @@
 package org.nocraft.loperd.datasync.spigot.listener;
 
 import com.gmail.tracebachi.DeltaRedis.Spigot.Events.DeltaRedisMessageEvent;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,8 +9,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.nocraft.loperd.datasync.spigot.*;
-import org.nocraft.loperd.datasync.spigot.manager.LockedPlayerManager;
+
+import org.nocraft.loperd.datasync.spigot.DataSyncChannels;
+import org.nocraft.loperd.datasync.spigot.DataSyncListenerBukkit;
+import org.nocraft.loperd.datasync.spigot.DataSyncPluginBukkit;
 import org.nocraft.loperd.datasync.spigot.player.PlayerData;
 import org.nocraft.loperd.datasync.spigot.player.QueuedPlayer;
 import org.nocraft.loperd.datasync.spigot.serialization.BukkitSerializer;
@@ -23,13 +26,11 @@ import java.util.concurrent.TimeUnit;
 public class PlayerEnterListener extends DataSyncListenerBukkit {
 
     private final Map<UUID, QueuedPlayer> queue = new ConcurrentHashMap<>();
-    private final LockedPlayerManager lockedPlayerManager;
     private final DataSyncPluginBukkit plugin;
 
     public PlayerEnterListener(DataSyncPluginBukkit plugin) {
         super(plugin);
         this.plugin = plugin;
-        this.lockedPlayerManager = plugin.getLockedPlayerManager();
 
         // Scheduled cleanup tasks for invalid queued players who are not on the server.
         this.plugin.getScheduler().asyncRepeating(this::cleanup, 5L, TimeUnit.SECONDS);
@@ -39,8 +40,8 @@ public class PlayerEnterListener extends DataSyncListenerBukkit {
         player.getActivePotionEffects().clear();
         player.getInventory().clear();
         player.updateInventory();
-        player.setFoodLevel(20);
-        player.setHealth(20D);
+        player.setFoodLevel(2);
+        player.setHealth(2D);
     }
 
     private synchronized void cleanup() {
@@ -73,10 +74,9 @@ public class PlayerEnterListener extends DataSyncListenerBukkit {
         queuedPlayer.setTimeoutTask(this.plugin.getScheduler().asyncLater(() ->
                 this.plugin.getStorage().loadPlayerData(uniqueId).thenAccept(
                         result -> this.plugin.applyPlayerData(uniqueId, result)
-                ), 2, TimeUnit.SECONDS)
+                ), 1100, TimeUnit.MILLISECONDS)
         );
 
-        this.lockedPlayerManager.add(uniqueId);
         this.queue.put(uniqueId, queuedPlayer);
     }
 
@@ -87,14 +87,20 @@ public class PlayerEnterListener extends DataSyncListenerBukkit {
 
         this.playerReset(player);
 
-        QueuedPlayer queuedPlayer = this.queue.remove(uniqueId);
-        if (null == queuedPlayer || !queuedPlayer.getData().isPresent()) {
-            this.queue.put(uniqueId, queuedPlayer);
+        if (!this.queue.containsKey(uniqueId)) {
+            this.plugin.getLogger().info("Player " + uniqueId + "  is not contains in queue.");
             return;
         }
 
-        queuedPlayer.stopTimeout();
-        this.plugin.applyPlayerData(queuedPlayer.getData().get());
+        player.sendActionBar('&', "&2&lLoading player data, please wait...");
+
+        QueuedPlayer queuedPlayer = this.queue
+                .get(uniqueId);
+        queuedPlayer.getData().ifPresent(data -> {
+            queuedPlayer.stopTimeout();
+            this.queue.remove(uniqueId);
+            this.plugin.applyPlayerData(data);
+        });
     }
 
     @EventHandler
