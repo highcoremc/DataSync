@@ -8,7 +8,7 @@
     <packaging>pom</packaging>
 
     <name>DataSync</name>
-    <version>0.1.2</version>
+    <version>1.2</version>
 
     <description>
         Plugin for synchronize all playerdata like armor, inventory, enderchest, etc..
@@ -18,7 +18,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
-        <version>0.1.1</version>
     </properties>
 
     <modules>
@@ -160,7 +159,6 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>9.4-1200-jdbc41</version>
-            <scope>сompile</scope>
         </dependency>
 
         <dependency>

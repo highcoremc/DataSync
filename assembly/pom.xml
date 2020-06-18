@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.nocraft.loperd</groupId>
         <artifactId>datasync</artifactId>
-        <version>0.1.2</version>
+        <version>1.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
