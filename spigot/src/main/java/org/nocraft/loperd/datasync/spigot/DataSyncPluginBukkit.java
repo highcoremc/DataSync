@@ -19,14 +19,13 @@ import org.nocraft.loperd.datasync.spigot.listener.LockedPlayerListener;
 import org.nocraft.loperd.datasync.spigot.listener.PlayerEnterListener;
 import org.nocraft.loperd.datasync.spigot.listener.PlayerLoadListener;
 import org.nocraft.loperd.datasync.spigot.manager.LockedPlayerManager;
+import org.nocraft.loperd.datasync.spigot.manager.PlayerSaveManager;
 import org.nocraft.loperd.datasync.spigot.player.PlayerData;
 import org.nocraft.loperd.datasync.spigot.player.PlayerDataApply;
-import org.nocraft.loperd.datasync.spigot.player.PlayerDataSave;
 
 import java.io.File;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class DataSyncPluginBukkit implements DataSyncPlugin {
 
@@ -34,6 +33,8 @@ public class DataSyncPluginBukkit implements DataSyncPlugin {
 
     @Getter
     private LockedPlayerManager lockedPlayerManager;
+    @Getter
+    private PlayerSaveManager playerSaveManager;
 
     private PluginConfiguration configuration;
     private final DataSyncBootstrapBukkit bootstrap;
@@ -50,13 +51,10 @@ public class DataSyncPluginBukkit implements DataSyncPlugin {
     }
 
     public void enable() {
-        this.lockedPlayerManager = new LockedPlayerManager(this);
-
         // load configuration
         getLogger().info("Loading configuration...");
 
         this.configuration = new PluginConfiguration(this, provideConfigurationAdapter());
-
         this.storage = new BukkitStorageAdapter(new StorageFactory(this));
 
         this.listeners.add(new PlayerEnterListener(this));
@@ -66,7 +64,8 @@ public class DataSyncPluginBukkit implements DataSyncPlugin {
 
         this.deltaRedisApi = DeltaRedisApi.instance();
 
-        this.getScheduler().asyncRepeating(new PlayerDataSave(this), 3, TimeUnit.SECONDS);
+        this.lockedPlayerManager = new LockedPlayerManager(this);
+        this.playerSaveManager = new PlayerSaveManager(this);
     }
 
     public void disable() {
@@ -145,5 +144,9 @@ public class DataSyncPluginBukkit implements DataSyncPlugin {
         }
 
         this.applyPlayerData(data.get());
+    }
+
+    public boolean isPlayerOnline(UUID uniqueId) {
+        return this.getBootstrap().isPlayerOnline(uniqueId);
     }
 }

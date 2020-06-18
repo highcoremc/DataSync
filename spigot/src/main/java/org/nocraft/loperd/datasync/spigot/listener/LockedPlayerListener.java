@@ -20,17 +20,19 @@ import java.util.UUID;
 
 public class LockedPlayerListener extends DataSyncListenerBukkit {
 
+    private final DataSyncPluginBukkit plugin;
     private LockedPlayerManager locked;
 
     public LockedPlayerListener(DataSyncPluginBukkit plugin) {
         super(plugin);
-        this.locked = plugin.getLockedPlayerManager();
+        this.plugin = plugin;
     }
 
     @Override
     public void shutdown() {
-        this.locked.clear();
-        this.locked = null;
+        if (this.plugin.getLockedPlayerManager() != null) {
+            this.plugin.getLockedPlayerManager().clear();
+        }
 
         super.shutdown();
     }
@@ -84,13 +86,13 @@ public class LockedPlayerListener extends DataSyncListenerBukkit {
     }
 
     private void handlePlayer(Cancellable event, Player player) {
-        if (this.locked.isLocked(player.getUniqueId())) {
-            event.setCancelled(true);
-        }
+        handlePlayer(event, player.getUniqueId());
     }
 
     private void handlePlayer(Cancellable event, UUID playerId) {
-        if (this.locked.isLocked(playerId)) {
+        LockedPlayerManager lockedPlayerManager =
+                this.plugin.getLockedPlayerManager();
+        if (lockedPlayerManager.isLocked(playerId)) {
             event.setCancelled(true);
         }
     }
