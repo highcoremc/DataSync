@@ -5,11 +5,11 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class PlayerLoadedEvent extends Event {
+public class PlayerAppliedEvent extends Event {
 
     private final Player player;
 
-    public PlayerLoadedEvent(Player player) {
+    public PlayerAppliedEvent(Player player) {
         this.player = player;
     }
 

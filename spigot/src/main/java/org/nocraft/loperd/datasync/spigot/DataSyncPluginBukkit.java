@@ -13,8 +13,8 @@ import org.nocraft.loperd.datasync.common.plugin.DataSyncPlugin;
 import org.nocraft.loperd.datasync.common.plugin.PluginLogger;
 import org.nocraft.loperd.datasync.common.scheduler.SchedulerAdapter;
 import org.nocraft.loperd.datasync.common.storage.StorageFactory;
-import org.nocraft.loperd.datasync.spigot.event.PlayerLoadEvent;
-import org.nocraft.loperd.datasync.spigot.event.PlayerLoadedEvent;
+import org.nocraft.loperd.datasync.spigot.event.PlayerApplyEvent;
+import org.nocraft.loperd.datasync.spigot.event.PlayerAppliedEvent;
 import org.nocraft.loperd.datasync.spigot.listener.LockedPlayerListener;
 import org.nocraft.loperd.datasync.spigot.listener.PlayerEnterListener;
 import org.nocraft.loperd.datasync.spigot.listener.PlayerLoadListener;
@@ -125,9 +125,12 @@ public class DataSyncPluginBukkit implements DataSyncPlugin {
 
         Player player = p.get();
 
-        getPluginManager().callEvent(new PlayerLoadEvent(player));
-        Runnable finalize = () -> getPluginManager().callEvent(new PlayerLoadedEvent(player));
-        this.getScheduler().sync().execute(new PlayerDataApply(player, data, finalize));
+        Runnable finalize = () -> getPluginManager().callEvent(new PlayerAppliedEvent(player));
+        Runnable started = () -> getPluginManager().callEvent(new PlayerApplyEvent(player));
+        PlayerDataApply apply = new PlayerDataApply(player, data, finalize);
+
+        this.getScheduler().async().execute(started);
+        this.getScheduler().sync().execute(apply);
     }
 
     @NotNull

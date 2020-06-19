@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.nocraft.loperd.datasync.spigot.DataSyncChannels;
 import org.nocraft.loperd.datasync.spigot.DataSyncListenerBukkit;
 import org.nocraft.loperd.datasync.spigot.DataSyncPluginBukkit;
-import org.nocraft.loperd.datasync.spigot.event.PlayerLoadedEvent;
+import org.nocraft.loperd.datasync.spigot.event.PlayerAppliedEvent;
 import org.nocraft.loperd.datasync.spigot.player.PlayerData;
 import org.nocraft.loperd.datasync.spigot.player.QueuedPlayer;
 import org.nocraft.loperd.datasync.spigot.serialization.BukkitSerializer;
@@ -106,7 +106,7 @@ public class PlayerEnterListener extends DataSyncListenerBukkit {
     }
 
     @EventHandler
-    public void onPlayerLoaded(PlayerLoadedEvent e) {
+    public void onPlayerLoaded(PlayerAppliedEvent e) {
         this.queue.remove(e.getPlayer().getUniqueId());
     }
 
