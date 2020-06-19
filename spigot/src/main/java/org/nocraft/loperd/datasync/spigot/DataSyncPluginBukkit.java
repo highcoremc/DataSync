@@ -3,6 +3,7 @@ package org.nocraft.loperd.datasync.spigot;
 import com.gmail.tracebachi.DeltaRedis.Spigot.DeltaRedisApi;
 import lombok.Getter;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import org.nocraft.loperd.datasync.common.Composer;
@@ -151,5 +152,9 @@ public class DataSyncPluginBukkit implements DataSyncPlugin {
 
     public boolean isPlayerOnline(UUID uniqueId) {
         return this.getBootstrap().isPlayerOnline(uniqueId);
+    }
+
+    public void callEvent(Event event) {
+        this.bootstrap.getServer().getPluginManager().callEvent(event);
     }
 }

@@ -8,14 +8,14 @@ import org.nocraft.loperd.datasync.common.storage.implementation.nosql.RedisConn
 import java.util.Optional;
 import java.util.UUID;
 
-public class NoSqlStorage implements StorageImplementation {
+public class RedisStorage implements StorageImplementation {
 
     private final static String STORAGE_KEY = "datasync";
 
     private final RedisConnectionFactory connectionFactory;
     private final DataSyncPlugin plugin;
 
-    public NoSqlStorage(DataSyncPlugin plugin, RedisConnectionFactory factory) {
+    public RedisStorage(DataSyncPlugin plugin, RedisConnectionFactory factory) {
         this.plugin = plugin;
         this.connectionFactory = factory;
     }

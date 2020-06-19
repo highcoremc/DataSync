@@ -1,7 +1,6 @@
 package org.nocraft.loperd.datasync.spigot.listener;
 
 import com.gmail.tracebachi.DeltaRedis.Spigot.Events.DeltaRedisMessageEvent;
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,11 +8,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-
 import org.nocraft.loperd.datasync.spigot.DataSyncChannels;
 import org.nocraft.loperd.datasync.spigot.DataSyncListenerBukkit;
 import org.nocraft.loperd.datasync.spigot.DataSyncPluginBukkit;
 import org.nocraft.loperd.datasync.spigot.event.PlayerAppliedEvent;
+import org.nocraft.loperd.datasync.spigot.event.PlayerNewbieEvent;
 import org.nocraft.loperd.datasync.spigot.player.PlayerData;
 import org.nocraft.loperd.datasync.spigot.player.QueuedPlayer;
 import org.nocraft.loperd.datasync.spigot.serialization.BukkitSerializer;
@@ -27,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 public class PlayerEnterListener extends DataSyncListenerBukkit {
 
     private final Map<UUID, QueuedPlayer> queue = new ConcurrentHashMap<>();
+    private Map<UUID, PlayerData> keepData = new ConcurrentHashMap<>();
     private final DataSyncPluginBukkit plugin;
 
     public PlayerEnterListener(DataSyncPluginBukkit plugin) {
@@ -85,12 +85,11 @@ public class PlayerEnterListener extends DataSyncListenerBukkit {
                 .join();
 
         if (!result.isPresent()) {
-            Optional<Player> optional = plugin.getBootstrap()
-                    .getPlayer(uniqueId);
-            optional.ifPresent(player -> {
-                player.setFoodLevel(20);
-                player.setHealth(20D);
-            });
+            Optional<Player> optional =
+                    plugin.getBootstrap().getPlayer(uniqueId);
+            optional.ifPresent(player -> this.plugin.callEvent(
+                    new PlayerNewbieEvent(player)));
+            plugin.getLogger().info("Event for PlayerNewbie was fired.");
             return;
         }
 
@@ -108,6 +107,18 @@ public class PlayerEnterListener extends DataSyncListenerBukkit {
     @EventHandler
     public void onPlayerLoaded(PlayerAppliedEvent e) {
         this.queue.remove(e.getPlayer().getUniqueId());
+        this.keepData.remove(e.getPlayer().getUniqueId());
+    }
+
+    @EventHandler
+    public void onPlayerNewbie(PlayerNewbieEvent e) {
+        Player p = e.getPlayer();
+        PlayerData data = this.keepData.remove(p.getUniqueId());
+        plugin.getLogger().info("Event for PlayerNewbie was accepted.");
+        if (null != data) {
+            plugin.getLogger().info("Event for PlayerNewbie was handled.");
+            this.plugin.applyPlayerData(data);
+        }
     }
 
     @EventHandler
@@ -115,6 +126,7 @@ public class PlayerEnterListener extends DataSyncListenerBukkit {
         Player player = e.getPlayer();
         UUID uniqueId = player.getUniqueId();
 
+        this.keepPlayerData(player);
         this.playerReset(player);
 
         if (!this.queue.containsKey(uniqueId)) {
@@ -131,6 +143,10 @@ public class PlayerEnterListener extends DataSyncListenerBukkit {
             this.queue.remove(uniqueId);
             this.plugin.applyPlayerData(data);
         });
+    }
+
+    private void keepPlayerData(Player player) {
+        this.keepData.put(player.getUniqueId(), new PlayerData(player));
     }
 
     @EventHandler

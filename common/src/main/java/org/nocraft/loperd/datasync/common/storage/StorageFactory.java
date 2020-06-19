@@ -1,8 +1,8 @@
 package org.nocraft.loperd.datasync.common.storage;
 
-import org.nocraft.loperd.datasync.common.plugin.DataSyncPlugin;
 import org.nocraft.loperd.datasync.common.config.ConfigKeys;
-import org.nocraft.loperd.datasync.common.storage.implementation.NoSqlStorage;
+import org.nocraft.loperd.datasync.common.plugin.DataSyncPlugin;
+import org.nocraft.loperd.datasync.common.storage.implementation.RedisStorage;
 import org.nocraft.loperd.datasync.common.storage.implementation.SqlStorage;
 import org.nocraft.loperd.datasync.common.storage.implementation.StorageImplementation;
 import org.nocraft.loperd.datasync.common.storage.implementation.nosql.RedisConnectionFactory;
@@ -48,7 +48,7 @@ public class StorageFactory {
                         this.plugin.getConfiguration().get(ConfigKeys.SQL_TABLE_PREFIX)
                 );
             case REDIS:
-                return new NoSqlStorage(
+                return new RedisStorage(
                         this.plugin,
                         new RedisConnectionFactory(this.plugin.getConfiguration().get(ConfigKeys.DATABASE_VALUES))
                 );

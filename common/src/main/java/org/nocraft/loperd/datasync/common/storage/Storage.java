@@ -88,11 +88,6 @@ public class Storage implements StorageAdapter<DataSyncPlayer, String> {
 
     @Override
     public CompletableFuture<Void> savePlayerData(DataSyncPlayer player) {
-        try {
-            this.implementation.savePlayerData(player);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return makeFuture(() -> this.implementation.savePlayerData(player));
     }
 }
