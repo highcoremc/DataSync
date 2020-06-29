@@ -13,6 +13,7 @@ import org.nocraft.loperd.datasync.spigot.DataSyncListenerBukkit;
 import org.nocraft.loperd.datasync.spigot.DataSyncPluginBukkit;
 import org.nocraft.loperd.datasync.spigot.event.PlayerAppliedEvent;
 import org.nocraft.loperd.datasync.spigot.event.PlayerNewbieEvent;
+import org.nocraft.loperd.datasync.spigot.manager.LockedPlayerManager;
 import org.nocraft.loperd.datasync.spigot.player.PlayerData;
 import org.nocraft.loperd.datasync.spigot.player.QueuedPlayer;
 import org.nocraft.loperd.datasync.spigot.serialization.BukkitSerializer;
@@ -26,7 +27,8 @@ import java.util.concurrent.TimeUnit;
 public class PlayerEnterListener extends DataSyncListenerBukkit {
 
     private final Map<UUID, QueuedPlayer> queue = new ConcurrentHashMap<>();
-    private Map<UUID, PlayerData> keepData = new ConcurrentHashMap<>();
+    private final Map<UUID, PlayerData> keepData = new ConcurrentHashMap<>();
+
     private final DataSyncPluginBukkit plugin;
 
     public PlayerEnterListener(DataSyncPluginBukkit plugin) {
@@ -77,6 +79,10 @@ public class PlayerEnterListener extends DataSyncListenerBukkit {
                 1100, TimeUnit.MILLISECONDS));
 
         this.queue.put(uniqueId, queuedPlayer);
+
+        LockedPlayerManager lockedPlayerManager =
+                this.plugin.getLockedPlayerManager();
+        lockedPlayerManager.add(uniqueId);
     }
 
     private void createTimeoutTask(UUID uniqueId) {
@@ -115,10 +121,16 @@ public class PlayerEnterListener extends DataSyncListenerBukkit {
         Player p = e.getPlayer();
         PlayerData data = this.keepData.remove(p.getUniqueId());
         plugin.getLogger().info("Event for PlayerNewbie was accepted.");
+
         if (null != data) {
             plugin.getLogger().info("Event for PlayerNewbie was handled.");
             this.plugin.applyPlayerData(data);
+            return;
         }
+
+        LockedPlayerManager lockedPlayerManager =
+                this.plugin.getLockedPlayerManager();
+        lockedPlayerManager.remove(p.getUniqueId());
     }
 
     @EventHandler
@@ -149,7 +161,7 @@ public class PlayerEnterListener extends DataSyncListenerBukkit {
         this.keepData.put(player.getUniqueId(), new PlayerData(player));
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
         UUID uniqueId = player.getUniqueId();

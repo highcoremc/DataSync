@@ -8,10 +8,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.*;
 import org.nocraft.loperd.datasync.spigot.DataSyncListenerBukkit;
 import org.nocraft.loperd.datasync.spigot.DataSyncPluginBukkit;
 import org.nocraft.loperd.datasync.spigot.manager.LockedPlayerManager;
@@ -57,8 +54,9 @@ public class LockedPlayerListener extends DataSyncListenerBukkit {
         handlePlayer(event, event.getPlayer());
     }
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPlayerPickupItemEvent(PlayerAttemptPickupItemEvent event) {
+    @SuppressWarnings("deprecation")
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onPlayerPickupItemEvent(PlayerPickupItemEvent event) {
         handlePlayer(event, event.getPlayer());
     }
 

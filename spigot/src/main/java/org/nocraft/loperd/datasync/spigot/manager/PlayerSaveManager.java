@@ -24,8 +24,14 @@ public class PlayerSaveManager {
         }
 
         for (Player player : this.activePlayers) {
-            if (null != player) {
-                this.plugin.getStorage().savePlayerData(player);
+            if (null == player) {
+                return;
+            }
+
+            try {
+                this.plugin.getStorage().savePlayerData(player); Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
