@@ -22,6 +22,7 @@ import org.nocraft.loperd.datasync.spigot.serialization.VersionMismatchException
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerEnterListener extends DataSyncListenerBukkit {
@@ -30,6 +31,7 @@ public class PlayerEnterListener extends DataSyncListenerBukkit {
     private final Map<UUID, PlayerData> keepData = new ConcurrentHashMap<>();
 
     private final DataSyncPluginBukkit plugin;
+    private final Set<UUID> skipList = new HashSet<>();
 
     public PlayerEnterListener(DataSyncPluginBukkit plugin) {
         super(plugin);
@@ -86,28 +88,46 @@ public class PlayerEnterListener extends DataSyncListenerBukkit {
     }
 
     private void createTimeoutTask(UUID uniqueId) {
-        Optional<PlayerData> result = this.plugin.getStorage()
-                .loadPlayerData(uniqueId)
-                .join();
+        try {
+            Optional<PlayerData> result = this.plugin.getStorage()
+                    .loadPlayerData(uniqueId).get();
 
-        if (!result.isPresent()) {
-            Optional<Player> optional =
-                    plugin.getBootstrap().getPlayer(uniqueId);
-            optional.ifPresent(player -> this.plugin.callEvent(
-                    new PlayerNewbieEvent(player)));
-            plugin.getLogger().info("Event for PlayerNewbie was fired.");
-            return;
-        }
+            if (!result.isPresent()) {
+                Optional<Player> optional =
+                        plugin.getBootstrap().getPlayer(uniqueId);
+                optional.ifPresent(player -> this.plugin.callEvent(
+                        new PlayerNewbieEvent(player)));
+                plugin.getLogger().info("Event for PlayerNewbie was fired.");
+                return;
+            }
 
-        PlayerData data = result.get();
-        if (this.plugin.isPlayerOnline(uniqueId)) {
-            this.plugin.applyPlayerData(data);
-        } else {
-            QueuedPlayer player = this.queue.getOrDefault(
-                    uniqueId, new QueuedPlayer(uniqueId));
-            player.changePlayerData(data);
-            this.queue.put(uniqueId, player);
+            PlayerData data = result.get();
+            if (this.plugin.isPlayerOnline(uniqueId)) {
+                this.plugin.applyPlayerData(data);
+            } else {
+                QueuedPlayer player = this.queue.getOrDefault(
+                        uniqueId, new QueuedPlayer(uniqueId));
+                player.changePlayerData(data);
+                this.queue.put(uniqueId, player);
+            }
+        } catch (InterruptedException | ExecutionException ex) {
+            ex.printStackTrace();
+
+            this.skipList.add(uniqueId);
+            handleFailedLoadPlayerData(uniqueId);
         }
+    }
+
+    private void handleFailedLoadPlayerData(UUID uniqueId) {
+        this.plugin.getScheduler().sync().execute(() -> {
+            Optional<Player> p = this.plugin.getBootstrap().getPlayer(uniqueId);
+
+            if (!p.isPresent()) {
+                return;
+            }
+
+            p.get().kickPlayer("§cFAIL§f - §fПожалуйста, перезайдите на сервер :3");
+        });
     }
 
     @EventHandler
@@ -168,6 +188,10 @@ public class PlayerEnterListener extends DataSyncListenerBukkit {
 
         this.plugin.getPlayerSaveManager().remove(player);
 
+        if (this.skipList.remove(player.getUniqueId())) {
+            return;
+        }
+
         if (null == this.queue.remove(uniqueId)) {
             String data = BukkitSerializer.toByteArray(new PlayerData(player));
 
@@ -202,8 +226,6 @@ public class PlayerEnterListener extends DataSyncListenerBukkit {
                     this.plugin.applyPlayerData(data);
                 }
                 break;
-            default:
-                this.plugin.getLogger().warn("Accepted message from unregistered channel " + e.getChannel());
         }
     }
 }
