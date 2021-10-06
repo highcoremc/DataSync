@@ -10,4 +10,4 @@ mvn clean package
 ```
 
 ## Requirements
-For correct work you must use [https://github.com/loperd/DeltaRedis](DeltaRedis)
+For correct work you must use [DeltaRedis](https://github.com/loperd/DeltaRedis)
