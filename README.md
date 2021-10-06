@@ -8,3 +8,6 @@ Use maven to compile
 ```
 mvn clean package
 ```
+
+## Requirements
+For correct work you must use [https://github.com/loperd/DeltaRedis](DeltaRedis)
